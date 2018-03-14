@@ -8,12 +8,13 @@ Role Variables
 
 ### common_groups
 
-サーバーに登録するグループを指定します。
+サーバーに登録/削除するグループを指定します。
 
 ```yaml
 common_groups:
-  - group1
-  - group2
+  - name: group1
+  - name: group2
+    remove: yes
 ```
 
 ### common_users

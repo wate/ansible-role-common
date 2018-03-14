@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'open-uri'
 
 describe file('/etc/skel/public') do
   it { should exist }
@@ -21,9 +22,14 @@ describe file('/etc/sudoers.d/wheel') do
   end
 end
 
-property['common_groups'].each do |group_name|
-  describe group(group_name) do
-    it { should exist }
+property['common_groups'].each do |group|
+  describe group(group['name']) do
+    is_removed = group.key?('remove') && group['remove']
+    if is_removed
+      it { should_not exist }
+    else
+      it { should exist }
+    end
   end
 end
 

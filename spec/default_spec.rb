@@ -21,6 +21,31 @@ describe file('/etc/sudoers.d/wheel') do
   end
 end
 
+property['common_groups'].each do |group_name|
+  describe group(group_name) do
+    it { should exist }
+  end
+end
+
+property['common_users'].each do |user|
+  describe user(user['name']) do
+    is_removed = user.key?('remove') and user['remove']
+    if is_removed
+      it { should_mot exist }
+    else
+      it { should exist }
+      if user.key?('shell')
+        it { should have_login_shell user['shell'] }
+      end
+      if user.key?('groups')
+        user['groups'].each do |group_name|
+          it { should belong_to_group group_name }
+        end
+      end
+    end
+  end
+end
+
 property['common_packages'].each do |pkg|
   describe package(pkg) do
     it { should be_installed }

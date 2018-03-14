@@ -29,14 +29,12 @@ end
 
 property['common_users'].each do |user|
   describe user(user['name']) do
-    is_removed = user.key?('remove') and user['remove']
+    is_removed = user.key?('remove') && user['remove']
     if is_removed
       it { should_mot exist }
     else
       it { should exist }
-      if user.key?('shell')
-        it { should have_login_shell user['shell'] }
-      end
+      it { should have_login_shell user['shell'] } if user.key?('shell')
       if user.key?('groups')
         user['groups'].each do |group_name|
           it { should belong_to_group group_name }

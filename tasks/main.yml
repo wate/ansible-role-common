@@ -4,7 +4,7 @@
   tags: sudo
 - name: set hostname
   hostname:
-    name: "{{ inventory_hostname }}"
+    name: "{{ common_hostname }}"
   tags:
     - hostname
 - name: create skeleton user web directory

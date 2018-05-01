@@ -38,6 +38,8 @@ common_users: []
   #   admin: no
   #   remove: yes
 
+common_hostname: "{{ inventory_hostname }}"
+
 common_ssh_port: 22
 common_ssh_use_geoip_filter: yes
 common_ssh_allow_countries:

@@ -44,6 +44,7 @@
   file:
     path: /etc/cron.d/ansible_management_job
     state: touch
+  when: not result.stat.exists
 - name: setup ssh
   import_tasks: ssh.yml
   tags: swap

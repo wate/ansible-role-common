@@ -39,6 +39,13 @@ common_users: []
   #   remove: yes
 
 common_ssh_port: 22
+common_ssh_use_geoip_filter: yes
+common_ssh_allow_countries:
+  - JP
+
+common_cron_geoip_update:
+  hour: 4
+  minute: 0
 
 fail2ban_jail_cfg:
   sshd:

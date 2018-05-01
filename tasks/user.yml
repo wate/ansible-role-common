@@ -1,3 +1,8 @@
+- name: manage groups
+  group:
+    name: "{{ item.name }}"
+    state: "{{ 'absent' if item.remove|default(false) else 'present' }}"
+  with_items: "{{ common_groups }}"
 - name: manage users
   user:
     name: "{{ item.name }}"
@@ -16,7 +21,7 @@
     - "{{ common_users|selectattr('remove', 'undefined')|list }}"
     - authorized_keys
     - flags:
-      skip_missing: yes
+        skip_missing: yes
 - name: add admin group for admin users
   user:
     name: "{{ item.name }}"

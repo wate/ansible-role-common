@@ -2,9 +2,6 @@
 - name: setup sudo
   import_tasks: sudo.yml
   tags: sudo
-- name: manage groups
-  import_tasks: group.yml
-  tags: group
 - name: create skeleton user web directory
   file:
     path: /etc/skel/public
@@ -12,7 +9,7 @@
     state: directory
   tags:
     - skeleton
-- name: set home directory permission
+- name: change home directory permission
   file:
     path: /home
     mode: "0755"
@@ -32,9 +29,21 @@
     name: firewalld
     state: started
     enabled: yes
+- name: set locale
+  command: localectl set-locale LANG=ja_JP.utf8
+  tags:
+    - skip_ansible_lint
 - name: setup etckeeper
   import_tasks: etckeeper.yml
   tags: etckeeper
+- name: check ansible manage cron job file
+  stat:
+    path: /etc/cron.d/ansible_management_job
+  register: result
+- name: create ansible manage cron job file
+  file:
+    path: /etc/cron.d/ansible_management_job
+    state: touch
 - name: setup ssh
   import_tasks: ssh.yml
   tags: swap

@@ -1,0 +1,25 @@
+- name: manage users
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password|default(omit) }}"
+    shell: "{{ item.shell|default('/bin/bash') }}"
+    groups: "{{ item.groups|default(omit) }}"
+    state: "{{ 'absent' if item.remove|default(false) else 'present' }}"
+    # `userdel` command `--remove` option
+    remove: "{{ item.remove|default(false) }}"
+  with_items: "{{ common_users }}"
+- name: set authorized keys
+  authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+  with_subelements:
+    - "{{ common_users|selectattr('remove', 'undefined')|list }}"
+    - authorized_keys
+    - flags:
+      skip_missing: yes
+- name: add admin group for admin users
+  user:
+    name: "{{ item.name }}"
+    groups: wheel
+    append: yes
+  with_items: "{{ common_users|selectattr('remove', 'undefined')|selectattr('admin', 'defined')|selectattr('admin', 'equalto', true)|list }}"

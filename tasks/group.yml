@@ -1,0 +1,5 @@
+- name: manage groups
+  group:
+    name: "{{ item.name }}"
+    state: "{{ 'absent' if item.remove|default(false) else 'present' }}"
+  with_items: "{{ common_groups }}"

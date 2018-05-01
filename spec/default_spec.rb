@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'open-uri'
 
 describe file('/etc/skel/public') do
   it { should exist }
@@ -76,4 +75,8 @@ end
 describe service('fail2ban') do
   it { should be_enabled }
   it { should be_running }
+end
+
+describe port(property['common_ssh_port']) do
+  it { should be_listening }
 end

@@ -38,8 +38,13 @@ common_users: []
   #   admin: no
   #   remove: yes
 
+common_ssh_port: 22
+
 fail2ban_jail_cfg:
   sshd:
     enabled: yes
 
 sudo_require_password: no
+
+common_swap_dest: /var/spool/swap/swapfile
+common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000)|round(1, 'floor')|float * 2)|int }}"

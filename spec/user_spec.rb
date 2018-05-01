@@ -15,7 +15,7 @@ property['common_users'].each do |user|
   describe user(user['name']) do
     is_removed = user.key?('remove') && user['remove']
     if is_removed
-      it { should_mot exist }
+      it { should_not exist }
     else
       it { should exist }
       it { should have_login_shell user['shell'] } if user.key?('shell')
@@ -27,7 +27,14 @@ property['common_users'].each do |user|
       it { should belong_to_group 'wheel' } if user.key?('admin') && user['admin']
       user_shell = user['shell'] || '/bin/bash'
       it { should have_login_shell user_shell }
-
     end
+  end
+end
+
+describe user('root') do
+  if property['common_root_lock']
+    its(:encrypted_password) { should match(/^!/) }
+  else
+    its(:encrypted_password) { should_not match(/^!/) }
   end
 end

@@ -47,6 +47,8 @@ common_cron_geoip_update:
   hour: 4
   minute: 0
 
+common_root_lock: no
+
 fail2ban_jail_cfg:
   sshd:
     enabled: yes

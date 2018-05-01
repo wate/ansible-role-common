@@ -2,6 +2,11 @@
 - name: setup sudo
   import_tasks: sudo.yml
   tags: sudo
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  tags:
+    - hostname
 - name: create skeleton user web directory
   file:
     path: /etc/skel/public

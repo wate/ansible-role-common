@@ -11,6 +11,11 @@ ansible:
       common_groups:
         - name: group_one
         - name: group_two
+        - name: system_group
+          system: yes
+        - name: system_group_with_id
+          id: 200
+          system: yes
         - name: absent_group
           remove: yes
       common_users:
@@ -26,6 +31,11 @@ ansible:
           groups:
             - group_one
           shell: /bin/zsh
+        - name: system_user
+          system: yes
+        - name: system_user_with_id
+          id: 10000
+          system: yes
         - name: absent_user
           groups:
             - group_one

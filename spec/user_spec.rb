@@ -7,6 +7,7 @@ property['common_groups'].each do |group|
       it { should_not exist }
     else
       it { should exist }
+      it { should have_gid group['id'] } if group.key?('id')
     end
   end
 end
@@ -24,7 +25,9 @@ property['common_users'].each do |user|
           it { should belong_to_group group_name }
         end
       end
+      it { should have_uid user['id'] } if user.key?('id')
       it { should belong_to_group 'wheel' } if user.key?('admin') && user['admin']
+      its(:encrypted_password) { should match(/^!!$/) } if user.key?('system') && user['system']
       user_shell = user['shell'] || '/bin/bash'
       it { should have_login_shell user_shell }
     end

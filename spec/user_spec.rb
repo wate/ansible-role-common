@@ -26,6 +26,7 @@ property['common_users'].each do |user|
         end
       end
       it { should have_uid user['id'] } if user.key?('id')
+      it { should have_home_directory user['home'] } if user.key?('home')
       it { should belong_to_group 'wheel' } if user.key?('admin') && user['admin']
       its(:encrypted_password) { should match(/^!!$/) } if user.key?('system') && user['system']
       user_shell = user['shell'] || '/bin/bash'

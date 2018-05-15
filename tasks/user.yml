@@ -13,6 +13,7 @@
     groups: "{{ item.groups|default(omit) }}"
     uid: "{{ item.id|default(omit) }}"
     system: "{{ item.system|default(omit) }}"
+    home: "{{ item.home|default(omit) }}"
     state: "{{ 'absent' if item.remove|default(false) else 'present' }}"
     # `userdel` command `--remove` option
     remove: "{{ item.remove|default(false) }}"

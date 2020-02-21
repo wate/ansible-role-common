@@ -167,17 +167,17 @@ common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000)|round(1, 'floor')|flo
 common_files:
   # # ローカルにあるファイルをアップロード
   # - dest: /usr/local/bin/upload-script
-  #   mode: "0755"
   #   src: path/to/script
+  #   mode: "0755"
   #   # owner: root
   #   # group: root
   #   # checksum: 1234567890abcdefghijklmnopqrstuvwxyz
   # # リモートファイルをダウンロード
   # - dest: /usr/local/bin/download-script
+  #   url: http://www.example.com/path/to/script
   #   mode: "0755"
   #   # owner: root
   #   # group: root
-  #   url: http://www.example.com/path/to/script
   #   # auth_basic_user: user
   #   # auth_basic_password: password
   #   # checksum: 1234567890abcdefghijklmnopqrstuvwxyz

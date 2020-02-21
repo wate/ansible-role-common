@@ -23,7 +23,7 @@ common_packages:
 common_groups: []
   # - name: group1
   # - name: group2
-  #   remove: true
+  #   removed: true
   # - name: system_group
   #   system: true
   # - name: system_group_with_id
@@ -40,7 +40,7 @@ common_users: []
   #   authorized_keys:
   #     - key: https://github.com/wate.keys
   #     - key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-  #       remove: true
+  #       removed: true
   #   shell: /bin/nologin
   #   secret_vars:
   #     - name: DB_HOST
@@ -51,6 +51,9 @@ common_users: []
   #       value: app_db_user
   #     - name: DB_PASS
   #       value: app_db_pass
+  #     - name: REMOVED_VAR
+  #       value: app_db_pass
+  #       removed: true
   #   cron_jobs:
   #     - name: display date
   #       job: date
@@ -66,17 +69,17 @@ common_users: []
   #     - name: remove job
   #       job: mkr wrap -- /path/to/your-batch
   #       day: 3
-  #       remove: true
+  #       removed: true
   #   cron_vars:
   #     - name: EMAIL
   #       value: test@example.com
   #     - name: SOME_NAME
   #       value: SOME_VALUE
-  #       remove: true
+  #       removed: true
   #       admin: false
   #   system: true
   #   id: 100000
-  #   remove: true
+  #   removed: true
 
 common_hostname: "{{ inventory_hostname }}"
 

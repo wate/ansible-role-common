@@ -11,6 +11,15 @@
       - section: commands
         name: apply_updates
         value: "yes"
+    common_files:
+      - dest: /usr/local/bin/upload_file
+        src: files/test_script
+        mode: "0755"
+      - dest: /usr/local/bin/download_file
+        url: "https://dummyimage.com/600x400/000/fff"
+        mode: "0644"
+      - dest: /usr/local/bin/remove_file
+        removed: true
     common_users:
       - name: simple
         password: "{{ 'password' | password_hash('sha512') }}"

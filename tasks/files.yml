@@ -28,4 +28,4 @@
   file:
     path: "{{ item.dest }}"
     state: absent
-  loop:  "{{ common_removed_files }}"
+  loop: "{{ common_removed_files }}"

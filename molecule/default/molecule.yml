@@ -7,7 +7,7 @@ platforms:
   ## https://hub.docker.com/u/geerlingguy
   - name: centos7
     groups:
-      - family_debian
+      - family_redhat
     children:
       - centos
     image: "geerlingguy/docker-centos7-ansible:latest"
@@ -18,7 +18,7 @@ platforms:
     pre_build_image: true
   # - name: centos8
   #   groups:
-  #     - family_debian
+  #     - family_redhat
   #   children:
   #     - centos
   #   image: "geerlingguy/docker-centos8-ansible:latest"

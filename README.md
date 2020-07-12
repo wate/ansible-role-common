@@ -14,12 +14,12 @@ Role Variables
 common_groups:
   - name: group1
   - name: group2
-    remove: yes
+    remove: true
   - name: system_group
-    system: yes
+    system: true
   - name: system_group_with_id
     id: 1000
-    system: yes
+    system: true
 ```
 
 ### common_users
@@ -39,9 +39,9 @@ common_users:
       - https://github.com/hoge.keys
     shell: /bin/nologin
     id: 100000
-    system: yes
-    admin: no
-    remove: yes
+    system: true
+    admin: false
+    remove: true
 ```
 
 ### common_packages

@@ -105,6 +105,8 @@ common_users: []
   #       value: SOME_VALUE
   #       removed: true
   #       admin: false
+  #   update_password: on_create
+  #   password_lock: false
   #   system: true
   #   id: 100000
   #   removed: true

@@ -25,7 +25,7 @@
   loop: "{{ common_users }}"
   loop_control:
     label: "{{ item.name }}"
-- name: reject removed users
+- name: filter removed users
   set_fact:
     existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
 - name: set authorized keys
@@ -41,7 +41,7 @@
     path: ~/.ssh
     state: directory
     mode: "0700"
-  loop: "{{ ssh_config_users }}"
+  loop: "{{ existing_users | selectattr('ssh_config', 'defined') | list }}"
   loop_control:
     label: "{{ item.name }}"
   become: true

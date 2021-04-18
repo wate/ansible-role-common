@@ -62,6 +62,9 @@
   import_tasks: swap.yml
   when: ansible_memory_mb.swap is undefined or ansible_memory_mb.swap.total == 0
   tags: swap
+- name: manage backup setting
+  import_tasks: backup.yml
+  tags: backup
 - name: setup other tools
   import_tasks: tools.yml
   tags: tools

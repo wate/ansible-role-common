@@ -20,6 +20,7 @@ common_packages:
   - bash-completion
   - tig
   - postfix
+  - ca-certificates
 
 common_groups: []
   # - name: group1

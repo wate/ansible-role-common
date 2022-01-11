@@ -1,18 +1,7 @@
 ---
-- name: check ansible manage cron job file
-  stat:
-    path: /etc/cron.d/ansible_management_job
-  register: result
-- name: create ansible manage cron job file
-  file:
-    path: /etc/cron.d/ansible_management_job
-    state: touch
-    owner: root
-    mode: "0644"
-  when: not result.stat.exists
 - name: manage cron variables
   cronvar:
-    cron_file: /etc/cron.d/ansible_management_job
+    user: "{{ item.user | default(omit) }}"
     name: "{{ item.name }}"
     value: "{{ item.value if item.removed | default(false) else omit }}"
     state: "{{ 'absent' if item.removed | default(false) else 'present' }}"
@@ -29,5 +18,4 @@
     disabled: "{{ item.disabled | default(false) }}"
     user: "{{ item.user | default('root') }}"
     state: "{{ 'absent' if item.removed | default(false) else 'present' }}"
-    cron_file: /etc/cron.d/ansible_management_job
   loop: "{{ common_cron_jobs }}"

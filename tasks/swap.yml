@@ -18,7 +18,7 @@
         mode: "0600"
         state: touch
     - name: initilize swapfile
-      command: "dd if=/dev/zero of={{ common_swap_dest }} bs=1M count={{ common_swap_size|int * 1024 }}"
+      command: "dd if=/dev/zero of={{ common_swap_dest }} bs=1M count={{ common_swap_size | int * 1024 }}"
     - name: create swap
       command: "mkswap {{ common_swap_dest }}"
   when: not result.stat.exists

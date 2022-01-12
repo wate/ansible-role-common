@@ -137,7 +137,8 @@ fail2ban_cfg: |
   [sshd]
   enabled = true
 
-sudo_require_password: false
+admin_group_name: server_admin
+admin_group_sudo_require_password: false
 
 yum_cron_daily_cfg: []
   # ## Update Setting

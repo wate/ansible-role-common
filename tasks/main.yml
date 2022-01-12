@@ -5,11 +5,11 @@
 - name: setup sudo
   import_tasks: sudo.yml
   tags: sudo
-# - name: set hostname
-#   hostname:
-#     name: "{{ common_hostname }}"
-#   tags:
-#     - hostname
+- name: set hostname
+  hostname:
+    name: "{{ common_hostname }}"
+  tags:
+    - hostname
 # - name: change home directory permission
 #   file:
 #     path: /home

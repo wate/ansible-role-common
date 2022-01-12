@@ -3,14 +3,14 @@ galaxy_info:
   author: yoshiaki tanaka
   description: server common settings
   license: MIT
-  min_ansible_version: 2.9
-  platforms:
-    - name: EL
-      versions:
-        - 7
-  galaxy_tags: []
   role_name: wate
-  namespace: repo_epel
-
+  namespace: common
+  min_ansible_version: 2.11
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+        - buster
+  galaxy_tags: []
 dependencies:
-  - repo-epel
+  - apt_backports

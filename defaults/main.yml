@@ -1,24 +1,28 @@
 ---
 common_packages:
-  - unzip
-  - zip
-  - perl
-  - crontabs
+  - build-essential
   - cpp
   - make
+  - unzip
+  - zip
+  - cron
+  - perl
   - autoconf
   - automake
+  - vim
+  - bash-completion
+  - git
+  - tig
+  - git-completion
+  - man-db
   - diffstat
+  - vnstat
+  - vnstati
   - m4
   - libtool
   - gcc
-  - gcc-c++
-  - patch
-  - git
-  - yum-utils
-  - vim-enhanced
-  - bash-completion
-  - tig
+  - bison
+  - flex
   - postfix
   - ca-certificates
 

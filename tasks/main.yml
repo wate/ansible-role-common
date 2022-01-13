@@ -56,10 +56,9 @@
 - name: manage cron
   import_tasks: cron.yml
   tags: cron
-
-# - name: setup ssh
-#   import_tasks: ssh.yml
-#   tags: ssh
+- name: setup ssh
+  import_tasks: ssh.yml
+  tags: ssh
 - name: setup fail2ban
   import_tasks: fail2ban.yml
   tags: fail2ban

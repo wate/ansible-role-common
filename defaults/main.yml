@@ -125,6 +125,8 @@ common_ssh_use_geoip_filter: true
 common_ssh_allow_countries:
   - JP
 
+common_repository_enable: true
+
 common_cron_geoip_update:
   hour: 4
   minute: 0
@@ -144,63 +146,13 @@ fail2ban_cfg: |
 admin_group_name: server_admin
 admin_group_sudo_require_password: false
 
-yum_cron_daily_cfg: []
-  # ## Update Setting
-  # - section: commands
-  #   name: update_cmd
-  #   # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-  #   value: default
-  # - section: commands
-  #   name: update_messages
-  #   value: "yes"
-  # - section: commands
-  #   name: download_updates
-  #   value: "yes"
-  # - section: commands
-  #   name: apply_updates
-  #   value: "no"
-  # - section: commands
-  #   name: random_sleep
-  #   value: 360
-  # ## Email Setting
-  # - section: email
-  #   name: email_from
-  #   value: root@localhost
-  # - section: email
-  #   name: email_to
-  #   value: root
-  # - section: email
-  #   name: email_host
-  #   value: localhost
-
-yum_cron_hourly_cfg: []
-  # ## Update Setting
-  # - section: commands
-  #   name: update_cmd
-  #   # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-  #   value: default
-  # - section: commands
-  #   name: update_messages
-  #   value: "no"
-  # - section: commands
-  #   name: download_updates
-  #   value: "no"
-  # - section: commands
-  #   name: apply_updates
-  #   value: "no"
-  # - section: commands
-  #   name: random_sleep
-  #   value: 15
-  # ## Email Setting
-  # - section: email
-  #   name: email_from
-  #   value: root
-  # - section: email
-  #   name: email_to
-  #   value: root
-  # - section: email
-  #   name: email_host
-  #   value: localhost
+auto_update_cfg:
+  # MAILON: error
+  # SYSLOGON: upgrade
+  # MAILTO: root
+  HOSTNAME: "{{ inventory_hostname }}"
+  # SUBJECTPREFIX: CRON-APT
+  # EXITON: "error"
 
 common_swap_dest: /var/spool/swap/swapfile
 common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"

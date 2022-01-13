@@ -12,5 +12,4 @@ galaxy_info:
         - bullseye
         - buster
   galaxy_tags: []
-dependencies:
-  - apt_backports
+dependencies: []

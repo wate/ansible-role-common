@@ -70,6 +70,6 @@
 # - name: manage backup setting
 #   import_tasks: backup.yml
 #   tags: backup
-# - name: setup other tools
-#   import_tasks: tools.yml
-#   tags: tools
+- name: setup other tools
+  import_tasks: tools.yml
+  tags: tools

@@ -6,6 +6,6 @@
     state: present
 - name: change apt default release
   template:
-    src: 99default_release.j2
+    src: repository/99default_release.j2
     dest: /etc/apt/apt.conf.d/99default_release
     mode: "0644"

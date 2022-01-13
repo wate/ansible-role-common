@@ -27,14 +27,9 @@
 - name: manage user
   import_tasks: user.yml
   tags: user
-- name: install ufw
-  apt:
-    name: ufw
-- name: firewalld is active and enabled on system startup
-  systemd:
-    name: ufw
-    state: started
-    enabled: true
+- name: setup firewall
+  import_tasks: firewall.yml
+  tags: firewall
 - name: install japanese environment
   apt:
     name: task-japanese
@@ -61,9 +56,10 @@
 - name: manage cron
   import_tasks: cron.yml
   tags: cron
+
 # - name: setup ssh
 #   import_tasks: ssh.yml
-#   tags: swap
+#   tags: ssh
 # - name: setup fail2ban
 #   import_tasks: fail2ban.yml
 #   tags: fail2ban

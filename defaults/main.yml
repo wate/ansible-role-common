@@ -154,7 +154,7 @@ auto_update_cfg:
   # SYSLOGON: upgrade
   # EXITON: error
 
-common_swap_dest: /var/spool/swap/swapfile
+common_swapfile_path: /var/spool/swap/swapfile
 common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
 
 common_files: []

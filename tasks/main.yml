@@ -63,10 +63,10 @@
 # - name: setup fail2ban
 #   import_tasks: fail2ban.yml
 #   tags: fail2ban
-# - name: setup swap
-#   import_tasks: swap.yml
-#   when: ansible_memory_mb.swap is undefined or ansible_memory_mb.swap.total == 0
-#   tags: swap
+- name: setup swap
+  import_tasks: swap.yml
+  when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0
+  tags: swap
 # - name: manage backup setting
 #   import_tasks: backup.yml
 #   tags: backup

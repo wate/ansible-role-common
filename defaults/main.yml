@@ -147,12 +147,12 @@ admin_group_name: server_admin
 admin_group_sudo_require_password: false
 
 auto_update_cfg:
+  HOSTNAME: "{{ inventory_hostname }}"
+  # MAILTO: root
+  # SUBJECTPREFIX: CRON-APT
   # MAILON: error
   # SYSLOGON: upgrade
-  # MAILTO: root
-  HOSTNAME: "{{ inventory_hostname }}"
-  # SUBJECTPREFIX: CRON-APT
-  # EXITON: "error"
+  # EXITON: error
 
 common_swap_dest: /var/spool/swap/swapfile
 common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"

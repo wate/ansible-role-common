@@ -156,7 +156,7 @@ auto_update_cfg:
   # EXITON: error
 
 common_swapfile_path: /var/spool/swap/swapfile
-common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
+common_swap_size: "{{ (((ansible_facts.memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
 
 common_files: []
   # # ローカルにあるファイルをアップロード

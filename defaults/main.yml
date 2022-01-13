@@ -17,7 +17,6 @@ common_packages:
   - man-db
   - diffstat
   - vnstat
-  - vnstati
   - m4
   - libtool
   - gcc
@@ -121,6 +120,8 @@ common_users: []
 common_hostname: "{{ inventory_hostname }}"
 
 common_ssh_port: 22
+common_ssh_ufw_rule: allow
+
 common_ssh_use_geoip_filter: true
 common_ssh_allow_countries:
   - JP
@@ -259,3 +260,8 @@ backup_settings: []
   #   # auth_basic_password: common_requre_sudo_password
   #   hour: 3
   #   minute: 45
+
+common_install_tools:
+  - rclone
+  - vnstati
+  # - glances

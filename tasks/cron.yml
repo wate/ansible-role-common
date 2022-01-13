@@ -4,7 +4,7 @@
     user: "{{ item.user | default(omit) }}"
     name: "{{ item.name }}"
     value: "{{ item.value if item.removed | default(false) else omit }}"
-    state: "{{ 'absent' if item.removed | default(false) else 'present' }}"
+    state: "{{ tem.removed | default(false) | ternary('absent', 'present') }}"
   loop: "{{ common_cron_vars }}"
 - name: manage cron jobs
   cron:
@@ -17,5 +17,5 @@
     weekday: "{{ item.weekday | string if item.weekday is defined else omit }}"
     disabled: "{{ item.disabled | default(false) }}"
     user: "{{ item.user | default('root') }}"
-    state: "{{ 'absent' if item.removed | default(false) else 'present' }}"
+    state: "{{ tem.removed | default(false) | ternary('absent', 'present') }}"
   loop: "{{ common_cron_jobs }}"

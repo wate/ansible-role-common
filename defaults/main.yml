@@ -165,7 +165,6 @@ common_files: []
   #   mode: "0755"
   #   # owner: root
   #   # group: root
-  #   # checksum: 1234567890abcdefghijklmnopqrstuvwxyz
   # # リモートファイルをダウンロード
   # - dest: /usr/local/bin/download-script
   #   url: http://www.example.com/path/to/script

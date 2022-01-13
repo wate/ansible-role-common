@@ -14,13 +14,13 @@
     path: /etc/hosts.deny
     regexp: "^sshd: "
     line: 'sshd: ALL'
-    state: "{{ 'present' if common_ssh_use_geoip_filter else 'absent' }}"
+    state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
 - name: set TCP Wrapper(allow)
   lineinfile:
     path: /etc/hosts.allow
     regexp: "^sshd: "
     line: 'sshd: ALL: spawn /usr/local/bin/sshfilter %a'
-    state: "{{ 'present' if common_ssh_use_geoip_filter else 'absent' }}"
+    state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
 - name: allow SSH port
   ufw:
     port: "{{ common_ssh_port }}"

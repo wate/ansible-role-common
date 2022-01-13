@@ -34,7 +34,7 @@
   apt:
     name: task-japanese
 - name: Ensure a locale exists
-  community.general.locale_gen:
+  locale_gen:
     name: ja_JP.UTF-8
     state: present
 - name: get system locale
@@ -50,9 +50,9 @@
 - name: setup package auto update
   import_tasks: auto_update.yml
   tags: auto_update
-# - name: manage files
-#   import_tasks: files.yml
-#   tags: file
+- name: manage files
+  import_tasks: files.yml
+  tags: file
 - name: manage cron
   import_tasks: cron.yml
   tags: cron
@@ -66,9 +66,9 @@
   import_tasks: swap.yml
   when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0
   tags: swap
-# - name: manage backup setting
-#   import_tasks: backup.yml
-#   tags: backup
+- name: manage backup setting
+  import_tasks: backup.yml
+  tags: backup
 - name: setup other tools
   import_tasks: tools.yml
   tags: tools

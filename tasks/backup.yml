@@ -12,19 +12,24 @@
 - name: download backup script
   get_url:
     url: "{{ item.url }}"
-    dest: "{{ backup_script_dir }}/{{ item.url | basename }}"
+    dest: "{{ backup_script_dir }}/{{ item.name | default(item.url | basename) }}"
     checksum: "{{ item.checksum | default(omit) }}"
     url_username: "{{ item.auth_basic_user | default(omit) }}"
     url_password: "{{ item.auth_basic_password | default(omit) }}"
     mode: "0755"
-  with_items: "{{ backup_settings|selectattr('url', 'defined') | list }}"
-- name: upload backup script
+  loop: "{{ backup_settings | selectattr('url', 'defined') | list }}"
+- name: upload backup script(script file)
   copy:
     src: "{{ item.file }}"
-    dest: "{{ backup_script_dir }}/{{ item.file | basename }}"
-    checksum: "{{ item.checksum | default(omit) }}"
+    dest: "{{ backup_script_dir }}/{{ item.name | default(item.file | basename) }}"
     mode: "0755"
-  loop: "{{ backup_settings | selectattr('file', 'defined') | list }}"
+  loop: "{{ backup_settings | selectattr('file', 'defined') | selectattr('template', 'undefined') | list }}"
+- name: upload backup script(jinja templete file)
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ backup_script_dir }}/{{ item.name | default(item.file | basename | regex_replace('.j2$', '')) }}"
+    mode: "0755"
+  loop: "{{ backup_settings | selectattr('file', 'defined') | selectattr('template', 'defiled')  | list }}"
 - name: manage backup settings
   cron:
     name: "{{ item.name }}"
@@ -36,5 +41,5 @@
     month: "{{ item.month | default(omit) }}"
     user: "{{ item.user | default('root') }}"
     disabled: "{{ item.disabled | default(false) }}"
-    state: "{{ 'present' if item.state | default(true) else 'absent' }}"
+    state: "{{ tem.state | default(true) | ternary('present', 'absent') }}"
   loop: "{{ backup_settings }}"

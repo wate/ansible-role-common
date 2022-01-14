@@ -267,3 +267,11 @@ common_install_tools:
   - rclone
   - vnstati
   # - glances
+
+common_japanese_fonts:
+  - fonts-umeplus
+  - fonts-yozvox-yozfont
+  - fonts-ipaexfont
+  - fonts-ipafont
+  - fonts-noto-cjk
+  - fonts-noto-cjk-extra

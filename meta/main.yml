@@ -3,8 +3,8 @@ galaxy_info:
   author: yoshiaki tanaka
   description: server common settings
   license: MIT
-  role_name: wate
-  namespace: common
+  namespace: wate
+  role_name: common
   min_ansible_version: 2.11
   platforms:
     - name: Debian

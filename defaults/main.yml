@@ -4,6 +4,7 @@ common_packages:
   - build-essential
   - cpp
   - curl
+  - rsync
   - make
   - unzip
   - zip

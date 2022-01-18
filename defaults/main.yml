@@ -24,6 +24,9 @@ common_packages:
   - gcc
   - bison
   - flex
+  - acl
+  - pkg-config
+  - imagemagick
   - postfix
   - ca-certificates
 
@@ -266,6 +269,7 @@ common_install_tools:
   - silversearcher-ag
   - tig
   - rclone
+  - nkf
   - vnstati
   # - glances
 

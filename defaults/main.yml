@@ -10,6 +10,7 @@ common_packages:
   - zip
   - cron
   - perl
+  - patch
   - autoconf
   - automake
   - vim

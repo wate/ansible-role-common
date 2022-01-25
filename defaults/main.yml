@@ -272,7 +272,7 @@ common_install_tools:
   - rclone
   - nkf
   - vnstati
-  # - glances
+  - glances
 
 common_japanese_fonts:
   - fonts-umeplus

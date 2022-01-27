@@ -1,24 +1,33 @@
 ---
 common_packages:
+  - lsb-release
+  - build-essential
+  - cpp
+  - curl
+  - rsync
+  - make
   - unzip
   - zip
+  - cron
   - perl
-  - crontabs
-  - cpp
-  - make
+  - patch
   - autoconf
   - automake
+  - vim
+  - bash-completion
+  - git
+  - git-completion
+  - man-db
   - diffstat
+  - vnstat
   - m4
   - libtool
   - gcc
-  - gcc-c++
-  - patch
-  - git
-  - yum-utils
-  - vim-enhanced
-  - bash-completion
-  - tig
+  - bison
+  - flex
+  - acl
+  - pkg-config
+  - imagemagick
   - postfix
   - ca-certificates
 
@@ -29,7 +38,7 @@ common_groups: []
   # - name: system_group
   #   system: true
   # - name: system_group_with_id
-  #   id: 1000
+  #   id: 1010
   #   system: true
 
 common_users: []
@@ -117,9 +126,13 @@ common_users: []
 common_hostname: "{{ inventory_hostname }}"
 
 common_ssh_port: 22
+common_ssh_ufw_rule: allow
+
 common_ssh_use_geoip_filter: true
 common_ssh_allow_countries:
   - JP
+
+common_repository_enable: true
 
 common_cron_geoip_update:
   hour: 4
@@ -137,68 +150,19 @@ fail2ban_cfg: |
   [sshd]
   enabled = true
 
-sudo_require_password: false
+admin_group_name: server_admin
+admin_group_sudo_require_password: false
 
-yum_cron_daily_cfg: []
-  # ## Update Setting
-  # - section: commands
-  #   name: update_cmd
-  #   # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-  #   value: default
-  # - section: commands
-  #   name: update_messages
-  #   value: "yes"
-  # - section: commands
-  #   name: download_updates
-  #   value: "yes"
-  # - section: commands
-  #   name: apply_updates
-  #   value: "no"
-  # - section: commands
-  #   name: random_sleep
-  #   value: 360
-  # ## Email Setting
-  # - section: email
-  #   name: email_from
-  #   value: root@localhost
-  # - section: email
-  #   name: email_to
-  #   value: root
-  # - section: email
-  #   name: email_host
-  #   value: localhost
+auto_update_cfg:
+  HOSTNAME: "{{ inventory_hostname }}"
+  # MAILTO: root
+  # SUBJECTPREFIX: CRON-APT
+  # MAILON: error
+  # SYSLOGON: upgrade
+  # EXITON: error
 
-yum_cron_hourly_cfg: []
-  # ## Update Setting
-  # - section: commands
-  #   name: update_cmd
-  #   # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-  #   value: default
-  # - section: commands
-  #   name: update_messages
-  #   value: "no"
-  # - section: commands
-  #   name: download_updates
-  #   value: "no"
-  # - section: commands
-  #   name: apply_updates
-  #   value: "no"
-  # - section: commands
-  #   name: random_sleep
-  #   value: 15
-  # ## Email Setting
-  # - section: email
-  #   name: email_from
-  #   value: root
-  # - section: email
-  #   name: email_to
-  #   value: root
-  # - section: email
-  #   name: email_host
-  #   value: localhost
-
-common_swap_dest: /var/spool/swap/swapfile
-common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
+common_swapfile_path: /var/spool/swap/swapfile
+common_swap_size: "{{ (((ansible_facts.memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
 
 common_files: []
   # # ローカルにあるファイルをアップロード
@@ -207,7 +171,6 @@ common_files: []
   #   mode: "0755"
   #   # owner: root
   #   # group: root
-  #   # checksum: 1234567890abcdefghijklmnopqrstuvwxyz
   # # リモートファイルをダウンロード
   # - dest: /usr/local/bin/download-script
   #   url: http://www.example.com/path/to/script
@@ -302,3 +265,19 @@ backup_settings: []
   #   # auth_basic_password: common_requre_sudo_password
   #   hour: 3
   #   minute: 45
+
+common_install_tools:
+  - silversearcher-ag
+  - tig
+  - rclone
+  - nkf
+  - vnstati
+  - glances
+
+common_japanese_fonts:
+  - fonts-umeplus
+  - fonts-yozvox-yozfont
+  - fonts-ipaexfont
+  - fonts-ipafont
+  - fonts-noto-cjk
+  - fonts-noto-cjk-extra

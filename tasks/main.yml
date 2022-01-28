@@ -45,6 +45,9 @@
 - name: manage cron
   import_tasks: cron.yml
   tags: cron
+- name: manage log
+  import_tasks: log.yml
+  tags: log
 - name: setup ssh
   import_tasks: ssh.yml
   tags: ssh

@@ -150,6 +150,9 @@ fail2ban_cfg: |
   [sshd]
   enabled = true
 
+rsyslog_custom_cfg: |
+  cron.*				/var/log/cron.log
+
 admin_group_name: server_admin
 admin_group_sudo_require_password: false
 

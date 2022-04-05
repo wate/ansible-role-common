@@ -1,25 +1,15 @@
 ---
-- name: install yum-cron
-  yum:
-    name: yum-cron
-- name: yum-cron daily setting
-  ini_file:
-    path: /etc/yum/yum-cron.conf
-    section: "{{ item.section }}"
-    option: "{{ item.name }}"
-    value: "{{ item.value | string }}"
-    mode: "0644"
-  loop: "{{ yum_cron_daily_cfg }}"
-- name: yum-cron hourly setting
-  ini_file:
-    path: /etc/yum/yum-cron-hourly.conf
-    section: "{{ item.section }}"
-    option: "{{ item.name }}"
-    value: "{{ item.value | string }}"
-    mode: "0644"
-  loop: "{{ yum_cron_hourly_cfg }}"
-- name: yum-cron is active and enabled on system startup service
-  systemd:
-    name: yum-cron
-    enabled: true
-    state: started
+- name: install cron-apt
+  apt:
+    name: cron-apt
+- name: cron-apt setting
+  lineinfile:
+    path: /etc/cron-apt/config
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}="{{ item.value }}"'
+  loop: "{{ auto_update_cfg | dict2items }}"
+- name: remove donload-only option
+  lineinfile:
+    path: /etc/cron-apt/action.d/3-download
+    regexp: '^dist-upgrade '
+    line: dist-upgrade -y -o APT::Get::Show-Upgraded=true

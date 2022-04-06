@@ -4,3 +4,4 @@
     src: sshd/custom.conf.j2
     dest: /etc/ssh/sshd_config.d/custom.conf
     mode: "0644"
+  notify: restart sshd

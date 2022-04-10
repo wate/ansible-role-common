@@ -229,7 +229,7 @@ common_disks:
   - device: /dev/sdb
     if_device_exists: true
     partitions:
-      - fs_type: ext4
+      - fstype: xfs
         number: 1
         part_start: 0%
         part_end: 100%

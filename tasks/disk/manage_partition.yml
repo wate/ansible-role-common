@@ -1,0 +1,9 @@
+- name: test common_disk_device
+  debug:
+    var: common_disk_device
+- name: test common_disk_if_device_exists
+  debug:
+    var: common_disk_if_device_exists
+- name: test common_disk_partition
+  debug:
+    var: common_disk_partition

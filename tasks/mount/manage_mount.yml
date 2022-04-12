@@ -1,0 +1,30 @@
+---
+- name: retrieve file system status
+  stat:
+    path: "{{ item.src }}"
+  register: stat_result
+- debug:
+    var: item
+- debug:
+    var: stat_result.stat
+- block:
+    - name: install dependency packages
+      apt:
+        name: "{{ item.required_packages }}"
+      when: item.required_packages is defined
+    - name: create mount point directory
+      file:
+        path: "{{ item.path }}"
+        mode: "0755"
+        state: directory
+    - name: control active and configured mount points
+      mount:
+        path: "{{ item.path  }}"
+        src: "{{ item.src | default(omit) }}"
+        fstype: "{{ item.fstype  }}"
+        opts: "{{ item.mount_options | default(['defaults']) | join(',') }}"
+        boot: "{{ item.automount | default(true) }}"
+        dump: "{{ item.dump | default(omit) }}"
+        passno: "{{ item.passno | default(omit) }}"
+        state: "{{ item.automount | default(true) | ternary('mounted', 'present') }}"
+  when: not item.if_device_exists | default(false) or (item.if_device_exists and stat_result.stat.exists)

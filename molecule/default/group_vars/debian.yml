@@ -90,7 +90,7 @@ common_users:
 backup_settings:
   - name: sample1
     command: echo date
-    file: filess/test_script
+    file: files/test_script
     script_name: test_script_1
     hour: 1
     minute: 23

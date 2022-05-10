@@ -26,6 +26,8 @@
     dest: "{{ backup_script_dir }}/{{ item.script_name | default(item.file | basename) }}"
     mode: "0755"
   loop: "{{ backup_settings | selectattr('file', 'defined') | list }}"
+  loop_control:
+    label: "{{ item.name }}"
 - name: upload backup script(jinja templete file)
   template:
     src: "{{ item.template }}"

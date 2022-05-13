@@ -6,16 +6,11 @@
   ansible.builtin.stat:
     path: /etc/.git
   register: result
-- name: etckeeper initilize
-  block:
-    - name: initilize etckeeper
-      command: etckeeper init
-      args:
-        chdir: /etc
-      tags:
-        - skip_ansible_lint
-    - name: initial commit
-      command: etckeeper commit "Initial commit"
-      tags:
-        - skip_ansible_lint
+- name: initilize etckeeper
+  ansible.builtin.command: etckeeper init
+  args:
+    chdir: /etc
+  when: not result.stat.exists
+- name: initial commit
+  ansible.builtin.command: etckeeper commit "Initial commit"
   when: not result.stat.exists

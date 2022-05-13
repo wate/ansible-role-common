@@ -11,7 +11,7 @@
     gather_subset:
       - 'hardware'
 - name: manage disk partition
-  include_tasks: disk/manage_partition.yml
+  ansible.builtin.include_tasks: disk/manage_partition.yml
   vars:
     tmp_device: "{{ item[0].device }}"
     tmp_if_device_exists: "{{ item[0].if_device_exists | default(true) }}"

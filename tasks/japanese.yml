@@ -6,7 +6,7 @@
   ansible.builtin.apt:
     name: "{{ common_japanese_fonts }}"
 - name: install other japanse fonts
-  include_tasks: "japanese/{{ item }}.yml"
+  ansible.builtin.include_tasks: "japanese/{{ item }}.yml"
   loop: "{{ other_japanese_fonts }}"
   vars:
     other_japanese_fonts:

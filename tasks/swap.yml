@@ -1,17 +1,17 @@
 ---
 - name: check swapfile exist
-  stat:
+  ansible.builtin.stat:
     path: "{{ common_swapfile_path }}"
   register: result
 - name: create swapfile
   block:
     - name: create swapfile directory
-      file:
+      ansible.builtin.file:
         path: "{{ common_swapfile_path | dirname }}"
         state: directory
         mode: "0700"
     - name: create swapfile
-      file:
+      ansible.builtin.file:
         path: "{{ common_swapfile_path }}"
         owner: root
         group: root

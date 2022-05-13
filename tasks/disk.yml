@@ -1,13 +1,13 @@
 ---
 - name: install dependency packages
-  apt:
+  ansible.builtin.apt:
     name:
       - parted
       - util-linux
       - e2fsprogs
       - xfsprogs
 - name: gathers hardware facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - 'hardware'
 - name: manage disk partition
@@ -18,6 +18,6 @@
     tmp_partition: "{{ item[1] }}"
   loop: "{{ common_disks | subelements('partitions') }}"
 - name: gathers hardware facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - 'hardware'

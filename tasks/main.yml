@@ -3,23 +3,23 @@
   import_tasks: repository.yml
   tags: repository
 - name: install aptitude
-  apt:
+  ansible.builtin.apt:
     name: aptitude
 - name: setup sudo
   import_tasks: sudo.yml
   tags: sudo
 - name: set hostname
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   tags:
     - hostname
 - name: change home directory permission
-  file:
+  ansible.builtin.file:
     path: /home
     mode: "0755"
     state: directory
 - name: install common packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ common_packages }}"
 - name: manage user skeleton directory
   import_tasks: skeleton.yml

@@ -1,12 +1,13 @@
 ---
 - name: install etckeeper
-  apt:
+  ansible.builtin.apt:
     name: etckeeper
 - name: check git repository directory
-  stat:
+  ansible.builtin.stat:
     path: /etc/.git
   register: result
-- block:
+- name: etckeeper initilize
+  block:
     - name: initilize etckeeper
       command: etckeeper init
       args:

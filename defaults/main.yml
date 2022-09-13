@@ -332,7 +332,6 @@ common_install_utilities:
   - jq
   - jc
   - fd-find
-  - httpie
   - nkf
   - vnstati
   - glances

@@ -329,6 +329,8 @@ common_install_utilities:
   - tig
   - silversearcher-ag
   - exa
+  - jq
+  - jc
   - fd-find
   - httpie
   - nkf

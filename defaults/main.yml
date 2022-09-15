@@ -330,7 +330,6 @@ common_install_utilities:
   - silversearcher-ag
   - exa
   - jq
-  - jc
   - fd-find
   - nkf
   - vnstati

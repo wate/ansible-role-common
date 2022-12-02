@@ -1,15 +1,15 @@
 ---
-- name: install cron-apt
+- name: Install cron-apt
   ansible.builtin.apt:
     name: cron-apt
-- name: cron-apt setting
+- name: Update cron-apt setting
   ansible.builtin.lineinfile:
     path: /etc/cron-apt/config
-    regexp: '^{{ item.key }}='
+    regexp: ^{{ item.key }}=
     line: '{{ item.key }}="{{ item.value }}"'
   loop: "{{ auto_update_cfg | dict2items }}"
-- name: remove donload-only option
+- name: Remove donload-only option
   ansible.builtin.lineinfile:
     path: /etc/cron-apt/action.d/3-download
-    regexp: '^dist-upgrade '
+    regexp: "^dist-upgrade "
     line: dist-upgrade -y -o APT::Get::Show-Upgraded=true

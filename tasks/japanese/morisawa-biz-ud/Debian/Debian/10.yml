@@ -1,0 +1,19 @@
+---
+# - name: Checkout Morisawa BIZ UD gothic font
+#   ansible.builtin.git:
+#     repo: https://github.com/googlefonts/morisawa-biz-ud-gothic.git
+#     dest: /usr/local/src/morisawa-biz-ud-gothic
+#     version: main
+# - name: Checkout Morisawa BIZ UD mincho font
+#   ansible.builtin.git:
+#     repo: https://github.com/googlefonts/morisawa-biz-ud-mincho.git
+#     dest: /usr/local/src/morisawa-biz-ud-mincho
+#     version: main
+# - name: Create symlink font directory
+#   ansible.builtin.file:
+#     path: /usr/local/share/fonts/morisawa-biz-ud-{{ item }}
+#     src: /usr/local/src/morisawa-biz-ud-{{ item }}/fonts/ttf
+#     state: link
+#   loop:
+#     - gothic
+#     - mincho

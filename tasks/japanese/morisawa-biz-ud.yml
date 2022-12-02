@@ -1,7 +1,7 @@
 ---
-- name: Find task file
+- name: Find platform task file
   ansible.builtin.set_fact:
-    install_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
+    include_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
   vars:
     params:
       files:
@@ -9,6 +9,7 @@
         - "{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}.yml"
         - "{{ ansible_facts.os_family }}.yml"
       paths:
-        - tasks/sshd
-- name: Setup sshd
-  ansible.builtin.include_tasks: "{{ install_task_file }}"
+        - tasks/japanese/morisawa-biz-ud
+- name: Install Morisawa BIZ UD font
+  ansible.builtin.include_tasks: "{{ include_task_file }}"
+  when: include_task_file | length > 0

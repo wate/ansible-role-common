@@ -1,0 +1,6 @@
+---
+- name: Install Morisawa BIZ UDGothic font
+  ansible.builtin.apt:
+    name:
+      - fonts-morisawa-bizud-gothic
+      - fonts-morisawa-bizud-mincho

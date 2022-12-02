@@ -2,9 +2,9 @@
 galaxy_info:
   role_name: common
   author: yoshiaki tanaka
-  description: setup base setting
+  description: setup common setting
   license: Apache
-  min_ansible_version: "2.10"
+  min_ansible_version: "2.13"
   platforms:
     - name: Debian
       versions:

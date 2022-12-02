@@ -1,12 +1,12 @@
 ---
-- name: create web user directory
+- name: Create user public directory
   ansible.builtin.file:
     path: /etc/skel/public
     mode: "0755"
     state: directory
-- name: create postfix  mail directories
+- name: Create postfix mail directories
   block:
-    - name: create mail qmail-style delivery box user direcrory
+    - name: Create mail qmail-style delivery box user direcrory
       ansible.builtin.file:
         path: /etc/skel/{{ item }}
         mode: "0700"

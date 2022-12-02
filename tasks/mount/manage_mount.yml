@@ -1,15 +1,15 @@
 ---
-- name: retrieve file system status
+- name: Retrieve file system status
   ansible.builtin.stat:
     path: "{{ mount_setting.src }}"
   register: stat_result
-- name: set mount setting
+- name: Set mount setting
   block:
-    - name: install dependency packages
+    - name: Install dependency packages
       ansible.builtin.apt:
         name: "{{ mount_setting.required_packages }}"
       when: mount_setting.required_packages is defined
-    - name: copy dependency file
+    - name: Copy dependency file
       ansible.builtin.copy:
         src: "{{ mount_setting.file.src }}"
         dest: "{{ mount_setting.file.dest }}"
@@ -18,7 +18,7 @@
         mode: "{{ mount_setting.file.mode | default(omit) }}"
         remote_src: "{{ mount_setting.file.remote_src | default(omit) }}"
       when: mount_setting.file is defined
-    - name: create dependency files
+    - name: Create dependency files
       ansible.builtin.template:
         src: "{{ mount_dependency_template.src }}"
         dest: "{{ mount_dependency_template.dest }}"
@@ -26,14 +26,14 @@
         group: "{{ mount_dependency_template.group | default(omit) }}"
         mode: "{{ mount_dependency_template.mode | default(omit) }}"
       when: mount_setting.template is defined
-    - name: create mount point directory
+    - name: Create mount point directory
       ansible.builtin.file:
         path: "{{ mount_setting.path }}"
         owner: "{{ mount_setting.owner | default(omit) }}"
         group: "{{ mount_setting.group | default(omit) }}"
         mode: "{{ mount_setting.mode | default('0755') }}"
         state: directory
-    - name: control active and configured mount points
+    - name: Ensure control active and configured mount points
       mount:
         path: "{{ mount_setting.path }}"
         src: "{{ mount_setting.src | default(omit) }}"
@@ -43,7 +43,7 @@
         dump: "{{ mount_setting.dump | default(omit) }}"
         passno: "{{ mount_setting.passno | default(omit) }}"
         state: "{{ mount_setting.automount | default(true) | ternary('mounted', 'present') }}"
-    - name: change owner/group/mode
+    - name: Change owner/group/mode
       ansible.builtin.file:
         path: "{{ mount_setting.path }}"
         owner: "{{ mount_setting.owner | default(omit) }}"

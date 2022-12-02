@@ -1,10 +1,10 @@
 ---
-- name: set variables
+- name: Set variables
   ansible.builtin.set_fact:
     common_download_files: "{{ common_files | selectattr('removed', 'undefined') | selectattr('url', 'defined') | list }}"
     common_upload_files: "{{ common_files | selectattr('removed', 'undefined') | selectattr('src', 'defined') | list }}"
     common_removed_files: "{{ common_files | selectattr('removed', 'defined') | list }}"
-- name: download files
+- name: Download files
   ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
@@ -15,7 +15,7 @@
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
   loop: "{{ common_download_files }}"
-- name: upload files
+- name: Upload files
   ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -24,7 +24,7 @@
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
   loop: "{{ common_upload_files }}"
-- name: remove files
+- name: Remove files
   ansible.builtin.file:
     path: "{{ item.dest }}"
     state: absent

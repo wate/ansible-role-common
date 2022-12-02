@@ -1,9 +1,10 @@
-- name: set temorary variable
+---
+- name: Set temorary variable
   ansible.builtin.set_fact:
     tmp_device_name: "{{ tmp_device.split('/')[-1] }}"
-- name: manage partition
+- name: Manage partition
   block:
-    - name: manage partition
+    - name: Manage partition
       parted:
         device: "{{ tmp_device }}"
         number: "{{ tmp_partition.number }}"
@@ -13,7 +14,7 @@
         flags: "{{ tmp_partition.flags | default(omit) }}"
         state: present
       register: partition_result
-    - name: make filesystem
+    - name: Make filesystem
       filesystem:
         fstype: "{{ tmp_partition.fstype }}"
         device: "{{ tmp_device }}{{ tmp_partition.number }}"

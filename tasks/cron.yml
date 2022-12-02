@@ -1,5 +1,5 @@
 ---
-- name: manage cron variables
+- name: Manage cron variables
   cronvar:
     user: "{{ item.user | default(omit) }}"
     name: "{{ item.name }}"

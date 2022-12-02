@@ -1,74 +1,75 @@
 ---
-- name: add repository
+- name: Add repository
   ansible.builtin.import_tasks: repository.yml
   tags: repository
-- name: install aptitude
+- name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
-- name: setup sudo
+- name: Setup sudo
   ansible.builtin.import_tasks: sudo.yml
   tags: sudo
-- name: set hostname
+- name: Set hostname
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   tags:
     - hostname
-- name: change home directory permission
+    - molecule-notest
+- name: Change home directory permission
   ansible.builtin.file:
     path: /home
     mode: "0755"
     state: directory
-- name: install common packages
+- name: Install common packages
   ansible.builtin.apt:
     name: "{{ common_packages }}"
-- name: manage user skeleton directory
+- name: Manage user skeleton directory
   ansible.builtin.import_tasks: skeleton.yml
   tags: skeleton
-- name: manage user
+- name: Manage user
   ansible.builtin.import_tasks: user.yml
   tags: user
-- name: setup disk partition
+- name: Setup disk partition
   ansible.builtin.import_tasks: disk.yml
   tags: disk
-- name: setup firewall
+- name: Setup firewall
   ansible.builtin.import_tasks: firewall.yml
   tags: firewall
-- name: setup japanese environment
+- name: Setup japanese environment
   ansible.builtin.import_tasks: japanese.yml
   tags: japanese
-- name: setup etckeeper
+- name: Setup etckeeper
   ansible.builtin.import_tasks: etckeeper.yml
   tags: etckeeper
-- name: setup package auto update
+- name: Setup package auto update
   ansible.builtin.import_tasks: auto_update.yml
   tags: auto_update
-- name: manage files
+- name: Manage files
   ansible.builtin.import_tasks: files.yml
   tags: file
-- name: manage cron
+- name: Manage cron
   ansible.builtin.import_tasks: cron.yml
   tags: cron
-- name: manage log
+- name: Manage log
   ansible.builtin.import_tasks: log.yml
   tags: log
-- name: setup sshd
+- name: Setup sshd
   ansible.builtin.import_tasks: sshd.yml
   tags: sshd
-- name: setup ssh
+- name: Setup ssh
   ansible.builtin.import_tasks: ssh.yml
   tags: ssh
-- name: setup fail2ban
+- name: Setup fail2ban
   ansible.builtin.import_tasks: fail2ban.yml
   tags: fail2ban
-- name: setup swap
+- name: Setup swap
   ansible.builtin.import_tasks: swap.yml
   tags: swap
-- name: manage mount setting
+- name: Manage mount setting
   ansible.builtin.import_tasks: mount.yml
   tags: mount
-- name: manage backup setting
+- name: Manage backup setting
   ansible.builtin.import_tasks: backup.yml
   tags: backup
-- name: setup other utilities
+- name: Setup other utilities
   ansible.builtin.import_tasks: utilities.yml
   tags: utilities

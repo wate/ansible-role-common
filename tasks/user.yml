@@ -1,5 +1,5 @@
 ---
-- name: manage groups
+- name: Manage groups
   ansible.builtin.group:
     name: "{{ item.name }}"
     gid: "{{ item.id | default(omit) }}"
@@ -8,7 +8,7 @@
   loop: "{{ common_groups }}"
   loop_control:
     label: "{{ item.name }}"
-- name: manage users
+- name: Manage users
   ansible.builtin.user:
     name: "{{ item.name }}"
     password: "{{ item.password | default(omit) }}"
@@ -25,10 +25,10 @@
   loop: "{{ common_users }}"
   loop_control:
     label: "{{ item.name }}"
-- name: filter removed users
+- name: Filter removed users
   ansible.builtin.set_fact:
     existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
-- name: set authorized keys
+- name: Set authorized keys
   authorized_key:
     user: "{{ item.0.name }}"
     key: "{{ item.1.key }}"
@@ -36,7 +36,7 @@
   loop: "{{ existing_users | subelements('authorized_keys', skip_missing=True) }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1 }}"
-- name: create ~/.ssh directory
+- name: Create ~/.ssh directory
   ansible.builtin.file:
     path: ~/.ssh
     state: directory
@@ -46,7 +46,7 @@
     label: "{{ item.name }}"
   become: true
   become_user: "{{ item.name }}"
-- name: manage ~/.ssh/config setting
+- name: Manage ~/.ssh/config setting
   ansible.builtin.blockinfile:
     path: ~/.ssh/config
     block: |
@@ -61,7 +61,7 @@
     label: "{{ item.name }}"
   become: true
   become_user: "{{ item.name }}"
-- name: deploy ssh private keys
+- name: Deploy ssh private keys
   ansible.builtin.copy:
     dest: ~/.ssh/{{ item.1.name }}
     src: "{{ item.1.src }}"
@@ -71,11 +71,11 @@
     label: "{{ item.0.name }} : {{ item.1.name }}"
   become: true
   become_user: "{{ item.0.name }}"
-- name: manage secret variable
+- name: Manage secret variable
   ansible.builtin.lineinfile:
     path: ~/.secret
-    regexp: "^export {{ item.1.name }}=.*"
-    line: 'export {{ item.1.name }}="{{ item.1.value | default("") }}"'
+    regexp: ^export {{ item.1.name }}=.*
+    line: export {{ item.1.name }}="{{ item.1.value | default("") }}"
     create: true
     mode: "0600"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
@@ -85,7 +85,7 @@
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
   tags: secret
-- name: add admin group for admin users
+- name: Add admin group for admin users
   ansible.builtin.user:
     name: "{{ item.name }}"
     groups: "{{ admin_group_name }}"
@@ -117,7 +117,7 @@
   loop: "{{ existing_users | subelements('cron_jobs', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
-- name: set root lock status
+- name: Set root lock status
   ansible.builtin.user:
     name: root
     password_lock: "{{ common_root_lock }}"

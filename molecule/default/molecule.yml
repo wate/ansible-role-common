@@ -4,27 +4,13 @@ dependency:
 driver:
   name: ${DRIVER_NAME:-docker}
 platforms:
-  - name: buster
-    groups:
-      - family_debian
-    children:
-      - debian
-    # driver:docker
-    image: "geerlingguy/docker-debian10-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    pre_build_image: true
-    # driver:vagrant
-    box: wate/debian-10
   - name: bullseye
     groups:
       - family_debian
     children:
       - debian
     # driver:docker
-    image: "geerlingguy/docker-debian11-ansible:latest"
+    image: geerlingguy/docker-debian11-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -32,6 +18,20 @@ platforms:
     pre_build_image: true
     # driver:vagrant
     box: wate/debian-11
+  - name: buster
+    groups:
+      - family_debian
+    children:
+      - debian
+    # driver:docker
+    image: geerlingguy/docker-debian10-ansible:latest
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    # driver:vagrant
+    box: wate/debian-10
 lint: |
   set -e
   yamllint .
@@ -43,6 +43,7 @@ provisioner:
   config_options:
     defaults:
       hash_behaviour: merge
+      stdout_callback: yaml
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 # verifier:

@@ -11,9 +11,11 @@
     version: main
 - name: Create symlink font directory
   ansible.builtin.file:
-    path: /usr/local/share/fonts/morisawa-biz-ud-{{ item }}
-    src: /usr/local/src/morisawa-biz-ud-{{ item }}/fonts/ttf
+    path: /usr/local/share/fonts/morisawa-biz-ud-{{ type_name }}
+    src: /usr/local/src/morisawa-biz-ud-{{ type_name }}/fonts/ttf
     state: link
   loop:
     - gothic
     - mincho
+  loop_control:
+    loop_var: type_name

@@ -5,6 +5,10 @@
     mode: "0755"
     state: directory
 - name: Create postfix mail directories
+  when:
+    - postfix_cfg is defined
+    - postfix_cfg.home_mailbox is defined
+    - postfix_cfg.home_mailbox == 'Maildir/'
   block:
     - name: Create mail qmail-style delivery box user direcrory
       ansible.builtin.file:
@@ -16,7 +20,3 @@
         - Maildir/new
         - Maildir/cur
         - Maildir/tmp
-  when:
-    - postfix_cfg is defined
-    - postfix_cfg.home_mailbox is defined
-    - postfix_cfg.home_mailbox == 'Maildir/'

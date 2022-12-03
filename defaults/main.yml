@@ -220,7 +220,6 @@ auto_update_cfg:
   # SYSLOGON: upgrade
   # EXITON: error
 
-
 ## ---------
 ## スワップファイルのパス
 ## ※スワップ領域が存在する場合、この変数に設定は無視されます

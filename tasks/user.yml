@@ -29,7 +29,7 @@
   ansible.builtin.set_fact:
     existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
 - name: Set authorized keys
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.0.name }}"
     key: "{{ item.1.key }}"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
@@ -94,7 +94,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: Manage cron job variavle
-  cronvar:
+  community.general.cronvar:
     user: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     value: "{{ omit if item.1.removed | default(false) else item.1.value | default('') }}"

@@ -3,9 +3,13 @@
   ansible.builtin.set_fact:
     tmp_device_name: "{{ tmp_device.split('/')[-1] }}"
 - name: Manage partition
+  when: |
+    not tmp_if_device_exists
+    or
+    (tmp_if_device_exists and ansible_facts['devices'][tmp_device_name] is defined)
   block:
     - name: Manage partition
-      parted:
+      community.general.parted:
         device: "{{ tmp_device }}"
         number: "{{ tmp_partition.number }}"
         fs_type: "{{ tmp_partition.fstype | default(omit) }}"
@@ -15,11 +19,10 @@
         state: present
       register: partition_result
     - name: Make filesystem
-      filesystem:
+      community.general.filesystem:
         fstype: "{{ tmp_partition.fstype }}"
         device: "{{ tmp_device }}{{ tmp_partition.number }}"
         opts: "{{ tmp_partition.mkfs_option | default(omit) }}"
       when:
         - tmp_partition.fstype is defined
         - partition_result is changed
-  when: not tmp_if_device_exists or (tmp_if_device_exists and ansible_facts['devices'][tmp_device_name] is defined)

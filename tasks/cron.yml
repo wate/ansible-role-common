@@ -1,6 +1,6 @@
 ---
 - name: Manage cron variables
-  cronvar:
+  community.general.cronvar:
     user: "{{ item.user | default(omit) }}"
     name: "{{ item.name }}"
     value: "{{ item.value if item.removed | default(false) else omit }}"

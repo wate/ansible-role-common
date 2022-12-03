@@ -1,11 +1,16 @@
 ---
 - name: Setup swap file
+  when: |
+    ansible_facts.memory_mb.swap is undefined
+    or
+    ansible_facts.memory_mb.swap.total == 0
   block:
     - name: Check swapfile exist
       ansible.builtin.stat:
         path: "{{ common_swapfile_path }}"
       register: result
     - name: Create swapfile
+      when: not result.stat.exists
       block:
         - name: Create swapfile directory
           ansible.builtin.file:
@@ -22,12 +27,13 @@
         - name: Initilize swapfile
           ansible.builtin.command:
             cmd: dd if=/dev/zero of={{ common_swapfile_path }} bs=1M count={{ common_swap_size | int * 1024 }}
+            removes: "{{ common_swapfile_path }}"
         - name: Create swap
           ansible.builtin.command:
             cmd: mkswap {{ common_swapfile_path }}
-      when: not result.stat.exists
+            removes: "{{ common_swapfile_path }}"
     - name: Ensure mounted swap
-      mount:
+      ansible.posix.mount:
         src: "{{ common_swapfile_path }}"
         path: swap
         fstype: swap
@@ -36,4 +42,4 @@
     - name: Ensure enable swap
       ansible.builtin.command:
         cmd: swapon
-  when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0
+        removes: "{{ common_swapfile_path }}"

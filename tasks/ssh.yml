@@ -27,12 +27,12 @@
     line: "sshd: ALL: spawn /usr/local/bin/sshfilter %a"
     state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
 - name: Ensure allow SSH port
-  ufw:
+  community.general.ufw:
     port: "{{ common_ssh_port | string }}"
     proto: tcp
     rule: "{{ common_ssh_ufw_rule }}"
 - name: Ensure enable ufw and set default policy
-  ufw:
+  community.general.ufw:
     logging: "on"
     state: enabled
     direction: incoming

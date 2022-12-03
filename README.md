@@ -1,308 +1,141 @@
 common
-=========
+=================
 
-[![Build Status](https://travis-ci.org/wate/ansible-role-common.svg?branch=master)](https://travis-ci.org/wate/ansible-role-common)
+common server setting
 
-ユーザーの追加や基本パッケージのインストールなど、サーバーの共通セットアップ処理を行います。
+OS Platform
+-----------------
+
+### Debian
+
+- bullseye
+- buster
 
 Role Variables
 --------------
 
-### common_groups
+### `common_packages`
 
-サーバーに登録/削除するグループを指定します。
+インストールするパッケージ
 
-```yml
-common_groups:
-  - name: group1
-  - name: group2
-    remove: true
-  - name: system_group
-    system: true
-  - name: system_group_with_id
-    id: 1000
-    system: true
-```
+### `common_groups`
 
-### common_users
+グループ
 
-サーバーに登録/削除するユーザーを指定します。
+### `common_users`
 
-```yaml
-common_users:
-  - name: sample_user
-    # Optional
-    password: "{{ 'password'|password_hash('sha512') }}"
-    groups:
-      - group1
-      - group2
-    authorized_keys:
-      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-      - https://github.com/hoge.keys
-    shell: /bin/nologin
-    id: 100000
-    system: true
-    admin: false
-    remove: true
-```
+ユーザー
 
-### common_packages
+### `common_hostname`
 
-インストールする基本パッケージを指定します。
+ホスト名
 
-```yaml
-common_packages:
-  - unzip
-  - zip
-  - perl
-  - cpp
-  - make
-  - autoconf
-  - automake
-  - diffstat
-  - m4
-  - libtool
-  - gcc
-  - gcc-c++
-  - patch
-  - git
-  - yum-utils
-  - vim-enhanced
-  - bash-completion
-  - tig
-```
+### `common_ssh_port`
 
+SSHのポート番号
 
-### common_hostname
+### `common_sshd_custom_cfg`
 
-ホスト名を指定します。
+SSHのカスタム設定
 
-```yml
-common_hostname: "{{ inventory_hostname }}"
-```
+### `common_ssh_ufw_rule`
 
+ufwのSSHポートルール
 
+### `common_ssh_use_geoip_filter`
 
+SSHのGeoIPフィルタの有効/無効
 
-### common_ssh_port: 22
+### `common_ssh_allow_countries`
 
-SSHのポート番号を指定します。
-※この設定はfirewalldのSSHのポート番号の解放に利用されます。
+SSH接続を許可する国コード  
+※「common_ssh_use_geoip_filter」が有効な場合のみ設定を行ってください
 
-```yml
-common_ssh_port: 22
-```
+### `common_repository_enable`
 
-### common_ssh_use_geoip_filter
+ufwのSSHポートのルール
 
-GeoIPによるSSHの接続元制限を行うか否かを指定します。
+### `common_cron_geoip_update`
 
-```yml
-common_ssh_use_geoip_filter: true
-```
+GeoIPの自動更新設定
 
-### common_ssh_allow_countries
+### `fail2ban_cfg`
 
-SSHの接続を許可する国コードを指定します。  
-この設定は`common_ssh_use_geoip_filter`が`true`に設定されている場合にのみ有効です。
+fail2banのカスタム設定
 
-```yml
-common_ssh_allow_countries:
-  - JP
-```
+### `rsyslog_custom_cfg`
 
-### common_cron_geoip_update
+syslogのカスタム設定
 
-GeoIPデータベースの更新を行う日時を指定します。
+### `admin_group_name`
 
-```yml
-common_cron_geoip_update:
-  hour: 4
-  minute: 0
-```
+管理者グループ名
 
-### fail2ban_jail_cfg
+### `admin_group_sudo_require_password`
 
-fail2banの設定を定義します。
+管理者グループに所属するユーザーがsudo実行時にパスワードの入力を行うか否か
 
-```yaml
-fail2ban_jail_cfg:
-  sshd:
-    enabled: yes
-```
+### `auto_update_cfg`
 
-### sudo_require_password
+cron-aptのカスタム設定
 
-sudoで実行を行う場合にパスワードを求めるか否かを指定します。
+### `common_swapfile_path`
 
-```yaml
-sudo_require_password: no
-```
+スワップファイルのパス  
+※スワップ領域が存在する場合、この変数に設定は無視されます
 
-### yum_cron_daily_cfg
+### `common_swap_size`
 
-yum-cronの日次処理の設定を指定します。
+スワップのサイズ  
+※スワップ領域が存在する場合、この変数に設定は無視されます
 
-```yml
-yum_cron_daily_cfg: 
-  ## Update Setting
-  - section: commands
-    name: update_cmd
-    # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-    value: default
-  - section: commands
-    name: update_messages
-    value: "yes"
-  - section: commands
-    name: download_updates
-    value: "yes"
-  - section: commands
-    name: apply_updates
-    value: "no"
-  - section: commands
-    name: random_sleep
-    value: 360
-  ## Email Setting
-  - section: email
-    name: email_from
-    value: root@localhost
-  - section: email
-    name: email_to
-    value: root
-  - section: email
-    name: email_host
-    value: localhost
-```
+### `common_files`
 
-### yum_cron_hourly_cfg
+ファイルのアップロード設定
 
-yum-cronの毎時処理の設定を指定します。
+### `common_cron_vars`
 
-```yml
-yum_cron_hourly_cfg: 
-  ## Update Setting
-  - section: commands
-    name: update_cmd
-    # default / security / security-severity:Critical / minimal / minimal-security / minimal-security-severity:Critical
-    value: default
-  - section: commands
-    name: update_messages
-    value: "no"
-  - section: commands
-    name: download_updates
-    value: "no"
-  - section: commands
-    name: apply_updates
-    value: "no"
-  - section: commands
-    name: random_sleep
-    value: 15
-  ## Email Setting
-  - section: email
-    name: email_from
-    value: root
-  - section: email
-    name: email_to
-    value: root
-  - section: email
-    name: email_host
-    value: localhost
-```
+cron変数の設定
 
+### `common_cron_jobs`
 
-### common_swap_dest
+cronの設定
 
-スワップファイルのパスを指定します。
-※この設定はスワップが存在しない場合のみ有効です。
+### `common_disks`
 
-```yml
-common_swap_dest: /var/spool/swap/swapfile
-```
+ディスク設定
 
-### common_swap_size
+### `common_mounts`
 
-スワップのサイズを指定します。
-※この設定はスワップが存在しない場合のみ有効です。
+マウント設定
 
-```yml
-common_swap_size: "{{ (((ansible_memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
-```
+### `backup_script_dir`
 
-### common_files
+バックアップスクリプト保存先ディレクトリ
 
-任意のファイルをアップロードまたはダウンロードし配置します。
+### `backup_dir`
 
-```yml
-common_files: 
-  # ローカルにあるファイルをアップロード
-  - dest: /usr/local/bin/upload-script
-    src: path/to/script
-    mode: "0755"
-    # owner: root
-    # group: root
-    # checksum: 1234567890abcdefghijklmnopqrstuvwxyz
-  # リモートファイルをダウンロード
-  - dest: /usr/local/bin/download-script
-    url: http://www.example.com/path/to/script
-    mode: "0755"
-    # owner: root
-    # group: root
-    # auth_basic_user: user
-    # auth_basic_password: password
-    # checksum: 1234567890abcdefghijklmnopqrstuvwxyz
-  # 既存のファイルを削除
-  - dest: /usr/local/bin/batch-script
-    ## ※この属性が指定されている場合は設定値の如何に関わらず、ファイルが存在する場合は削除する
-    removed: true
-```
+バックアップデータ保存先ディレクトリ
 
-### common_cron_jobs
+### `backup_settings`
 
-cronジョブの設定を行います。
+バックアップ設定
 
-```yml
-common_cron_jobs: 
-  - name: check ssl expiration date
-    ## 定期実行コマンド
-    job: cert -f json example.com
-    ## 定期実行日時(時)
-    hour: 1
-    ## 定期実行日時(分)
-    minute: 23
-    ## 定期実行日時(日)
-    # day: "*"
-    ## 定期実行日時(月)
-    # month: "*"
-    ## 定期実行日時(曜日)
-    # weekday: "*"
-    ## 実行ユーザー
-    # user: root
-    ## 定期実行設定は残したまま無効化するか否か
-    # disabled: true
-    ## 定期実行設定の存在の有無(これが指定された場合は値の如何に関わらず、設定が存在する場合は削除します)
-    # removed: true
-```
+### `common_install_utilities`
 
-### common_cron_vars
+インストールするユーティリティパッケージ
 
-cron用の変数を設定します。
+### `common_japanese_fonts`
 
-```yml
-common_cron_vars: 
-  - name: PATH
-    value: /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
-  - name: MAILTO
-    value: root
-  - name: SHELL
-    value: /usr/bin/bash
-  - name: HOME
-    value: /
-    ## 以下が指定された場合は指定の変数を削除します
-    # removed: true
-```
+日本語フォント(パッケージ)の設定
+
+### `install_other_japanese_fonts`
+
+その他の日本語フォントのインストールの可否  
+※現時点ではモリサワの「BIZ UD」フォントのみ
 
 Example Playbook
-----------------
+--------------
 
 ```yaml
 - hosts: servers
@@ -311,6 +144,6 @@ Example Playbook
 ```
 
 License
--------
+--------------
 
 Apache License 2.0

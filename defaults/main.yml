@@ -1,4 +1,7 @@
 ---
+## ---------
+## インストールするパッケージ
+## ---------
 common_packages:
   - lsb-release
   - build-essential
@@ -31,6 +34,9 @@ common_packages:
   - ca-certificates
   - software-properties-common
 
+## ---------
+## グループ
+## ---------
 common_groups: []
 # - name: group1
 # - name: group2
@@ -41,6 +47,9 @@ common_groups: []
 #   id: 1010
 #   system: true
 
+## ---------
+## ユーザー
+## ---------
 common_users: []
 # - name: sample_user
 #   # ------
@@ -126,27 +135,55 @@ common_users: []
 #   id: 100000
 #   removed: true
 
+## ---------
+## ホスト名
+## ---------
 common_hostname: "{{ inventory_hostname }}"
 
+## ---------
+## SSHのポート番号
+## ---------
 common_ssh_port: 22
 
+## ---------
+## SSHのカスタム設定
+## ---------
 common_sshd_custom_cfg: |
   #Port 10022
 
+## ---------
+## ufwのSSHポートルール
+## ---------
 common_ssh_ufw_rule: allow
 
+## ---------
+## SSHのGeoIPフィルタの有効/無効
+## ---------
 common_ssh_use_geoip_filter: true
+## ---------
+## SSH接続を許可する国コード
+## ※「common_ssh_use_geoip_filter」が有効な場合のみ設定を行ってください
+## ---------
 common_ssh_allow_countries:
   - JP
 
+## ---------
+## ufwのSSHポートのルール
+## ---------
 common_repository_enable: true
 
+## ---------
+## GeoIPの自動更新設定
+## ---------
 common_cron_geoip_update:
   hour: 4
   minute: 0
 
 # common_root_lock: false
 
+## ---------
+## fail2banのカスタム設定
+## ---------
 fail2ban_cfg: |
   #[DEFAULT]
   #bantime  = 10m
@@ -157,12 +194,24 @@ fail2ban_cfg: |
   [sshd]
   enabled = true
 
+## ---------
+## syslogのカスタム設定
+## ---------
 rsyslog_custom_cfg: |
   cron.*				/var/log/cron.log
 
+## ---------
+## 管理者グループ名
+## ---------
 admin_group_name: adm
+## ---------
+## 管理者グループに所属するユーザーがsudo実行時にパスワードの入力を行うか否か
+## ---------
 admin_group_sudo_require_password: false
 
+## ---------
+## cron-aptのカスタム設定
+## ---------
 auto_update_cfg:
   HOSTNAME: "{{ inventory_hostname }}"
   # MAILTO: root
@@ -171,9 +220,21 @@ auto_update_cfg:
   # SYSLOGON: upgrade
   # EXITON: error
 
+
+## ---------
+## スワップファイルのパス
+## ※スワップ領域が存在する場合、この変数に設定は無視されます
+## ---------
 common_swapfile_path: /var/spool/swap/swapfile
+## ---------
+## スワップのサイズ
+## ※スワップ領域が存在する場合、この変数に設定は無視されます
+## ---------
 common_swap_size: "{{ (((ansible_facts.memtotal_mb + 50) / 1000) | round(1, 'floor') | float * 2) | int }}"
 
+## ---------
+## ファイルのアップロード設定
+## ---------
 common_files: []
 # # ローカルにあるファイルをアップロード
 # - dest: /usr/local/bin/upload-script
@@ -195,6 +256,9 @@ common_files: []
 #   ## ※この属性が指定されている場合は設定値の如何に関わらず、ファイルが存在する場合は削除する
 #   removed: true
 
+## ---------
+## cron変数の設定
+## ---------
 common_cron_vars: []
 # - name: PATH
 #   value: /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
@@ -206,6 +270,9 @@ common_cron_vars: []
 #   value: /
 #   removed: true
 
+## ---------
+## cronの設定
+## ---------
 common_cron_jobs: []
 # - name: check ssl expiration date
 #   ## 定期実行コマンド
@@ -227,7 +294,9 @@ common_cron_jobs: []
 #   ## 定期実行設定の存在の有無(これが指定された場合は値の如何に関わらず、設定が存在する場合は削除する)
 #   # removed: true
 
-# ディスク操作
+## ---------
+## ディスク設定
+## ---------
 common_disks: []
 # - device: /dev/sdb
 #   if_device_exists: true
@@ -237,7 +306,9 @@ common_disks: []
 #       part_start: 0%
 #       part_end: 100%
 
-# マウント操作
+## ---------
+## マウント設定
+## ---------
 common_mounts: []
 #   ## 追加ディスクのマウント
 # - path: /backup/data
@@ -269,13 +340,19 @@ common_mounts: []
 #     src: ./rclone.conf.j2
 #     dest: /home/user/.rclone.conf
 
-# バックアップスクリプト保存先ディレクトリ
+## ---------
+## バックアップスクリプト保存先ディレクトリ
+## ---------
 backup_script_dir: /backup/scripts
 
-# バックアップデータ保存先ディレクトリ
+## ---------
+## バックアップデータ保存先ディレクトリ
+## ---------
 backup_dir: /backup/data
 
-# バックアップ設定
+## ---------
+## バックアップ設定
+## ---------
 backup_settings: []
 # - name: backup setting
 #   ## バックアップコマンド
@@ -325,6 +402,9 @@ backup_settings: []
 #   hour: 3
 #   minute: 45
 
+## ---------
+## インストールするユーティリティパッケージ
+## ---------
 common_install_utilities:
   - tig
   - silversearcher-ag
@@ -336,11 +416,17 @@ common_install_utilities:
   - glances
   - rclone
 
+## ---------
+## 日本語フォント(パッケージ)の設定
+## ---------
 common_japanese_fonts:
   - fonts-ipaexfont
   - fonts-ipafont
   - fonts-noto-cjk
   - fonts-noto-cjk-extra
 
-# その他日本語フォントのインストール
+## ---------
+## その他の日本語フォントのインストールの可否
+## ※現時点ではモリサワの「BIZ UD」フォントのみ
+## ---------
 install_other_japanese_fonts: true

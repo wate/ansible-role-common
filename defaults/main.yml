@@ -20,6 +20,7 @@ common_packages:
   - bash-completion
   - git
   - man-db
+  - sysstat
   - diffstat
   - vnstat
   - m4

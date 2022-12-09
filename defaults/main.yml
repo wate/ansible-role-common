@@ -36,7 +36,7 @@ common_packages:
   - software-properties-common
 
 ## ---------
-## グループ
+## グループの設定
 ## ---------
 common_groups: []
 # - name: group1
@@ -49,7 +49,7 @@ common_groups: []
 #   system: true
 
 ## ---------
-## ユーザー
+## ユーザーの設定
 ## ---------
 common_users: []
 # - name: sample_user
@@ -183,7 +183,7 @@ common_cron_geoip_update:
 # common_root_lock: false
 
 ## ---------
-## fail2banのカスタム設定
+## fail2banの追加設定
 ## ---------
 fail2ban_cfg: |
   #[DEFAULT]
@@ -196,7 +196,7 @@ fail2ban_cfg: |
   enabled = true
 
 ## ---------
-## syslogのカスタム設定
+## syslogの追加設定
 ## ---------
 rsyslog_custom_cfg: |
   cron.*				/var/log/cron.log
@@ -211,7 +211,7 @@ admin_group_name: adm
 admin_group_sudo_require_password: false
 
 ## ---------
-## cron-aptのカスタム設定
+## パッケージの自動更新(cron-apt)のカスタム設定
 ## ---------
 auto_update_cfg:
   HOSTNAME: "{{ inventory_hostname }}"
@@ -295,7 +295,7 @@ common_cron_jobs: []
 #   # removed: true
 
 ## ---------
-## ディスク設定
+## ディスクの設定
 ## ---------
 common_disks: []
 # - device: /dev/sdb
@@ -307,7 +307,7 @@ common_disks: []
 #       part_end: 100%
 
 ## ---------
-## マウント設定
+## マウントの設定
 ## ---------
 common_mounts: []
 #   ## 追加ディスクのマウント
@@ -351,7 +351,7 @@ backup_script_dir: /backup/scripts
 backup_dir: /backup/data
 
 ## ---------
-## バックアップ設定
+## バックアップの設定
 ## ---------
 backup_settings: []
 # - name: backup setting

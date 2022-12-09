@@ -20,11 +20,11 @@ Role Variables
 
 ### `common_groups`
 
-グループ
+グループの設定
 
 ### `common_users`
 
-ユーザー
+ユーザーの設定
 
 ### `common_hostname`
 
@@ -61,11 +61,11 @@ GeoIPの自動更新設定
 
 ### `fail2ban_cfg`
 
-fail2banのカスタム設定
+fail2banの追加設定
 
 ### `rsyslog_custom_cfg`
 
-syslogのカスタム設定
+syslogの追加設定
 
 ### `admin_group_name`
 
@@ -77,7 +77,7 @@ syslogのカスタム設定
 
 ### `auto_update_cfg`
 
-cron-aptのカスタム設定
+パッケージの自動更新(cron-apt)のカスタム設定
 
 ### `common_swapfile_path`
 
@@ -103,11 +103,11 @@ cronの設定
 
 ### `common_disks`
 
-ディスク設定
+ディスクの設定
 
 ### `common_mounts`
 
-マウント設定
+マウントの設定
 
 ### `backup_script_dir`
 
@@ -119,7 +119,7 @@ cronの設定
 
 ### `backup_settings`
 
-バックアップ設定
+バックアップの設定
 
 ### `common_install_utilities`
 

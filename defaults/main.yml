@@ -35,6 +35,10 @@ common_packages:
   - ca-certificates
   - software-properties-common
 
+aaaa:
+  - 1234
+  # - 5678
+
 ## ---------
 ## グループの設定
 ## ---------
@@ -310,7 +314,7 @@ common_disks: []
 ## マウントの設定
 ## ---------
 common_mounts: []
-#   ## 追加ディスクのマウント
+# ## 追加ディスクのマウント
 # - path: /backup/data
 #   src: /dev/sdb1
 #   if_device_exists: true
@@ -318,7 +322,7 @@ common_mounts: []
 #   automount: true
 #   mount_options:
 #     - defaults
-#   ## オブジェクトストレージのマウント
+# ## オブジェクトストレージのマウント
 # - path: /object_strage
 #   required_packages:
 #     - rclone
@@ -356,23 +360,23 @@ backup_dir: /backup/data
 backup_settings: []
 # - name: backup setting
 #   ## バックアップコマンド
-#   command: mysqldump -u ${DB_USER} -p${DB_PASS} -h ${DB_HOST} --single-transaction ${DB_NAME} | gzip >{{ backup_dir }}/${DB_NAME}-$(date +"%Y-%m-%d_%H%M%S").sql.gz
+#   command: mysqldump -u ${DB_USER} -p${DB_PASS} -single-transaction ${DB_NAME} | gzip >{{ backup_dir }}/${DB_NAME}-$(date +"%Y-%m-%d_%H%M%S").sql.gz
 #   ## バックアップ実行日時(時)
 #   hour: 1
 #   ## バックアップ実行日時(分)
 #   minute: 23
-#   ## バックアップ実行日時(日)
-#   # day: "*"
-#   ## バックアップ実行日時(月)
-#   # month: "*"
-#   ## バックアップ実行日時(曜日)
-#   # weekday: "*"
-#   ## バックアップ設定の存在の有無(true:設定が存在しない場合は登録/false:設定が存在する場合は削除)
-#   # state: true
-#   ## 実行ユーザー
-#   # user: root
-#   ## バックアップ設定は残したまま無効化するか否か
-#   # disabled: true
+# ## バックアップ実行日時(日)
+# # day: "*"
+# ## バックアップ実行日時(月)
+# # month: "*"
+# ## バックアップ実行日時(曜日)
+# # weekday: "*"
+# ## バックアップ設定の存在の有無(true:設定が存在しない場合は登録/false:設定が存在する場合は削除)
+# # state: true
+# ## 実行ユーザー
+# # user: root
+# ## バックアップ設定は残したまま無効化するか否か
+# # disabled: true
 # - name: backup setting with upload backup script file
 #   command: "{{ backup_script_dir }}/script_file"
 #   ## アップロードするファイル

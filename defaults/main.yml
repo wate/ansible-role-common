@@ -358,8 +358,8 @@ backup_dir: /backup/data
 ## バックアップの設定
 ## ---------
 backup_settings: []
+# ## バックアップコマンド
 # - name: backup setting
-#   ## バックアップコマンド
 #   command: mysqldump -u ${DB_USER} -p${DB_PASS} -single-transaction ${DB_NAME} | gzip >{{ backup_dir }}/${DB_NAME}-$(date +"%Y-%m-%d_%H%M%S").sql.gz
 #   ## バックアップ実行日時(時)
 #   hour: 1

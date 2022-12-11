@@ -35,10 +35,6 @@ common_packages:
   - ca-certificates
   - software-properties-common
 
-aaaa:
-  - 1234
-  # - 5678
-
 ## ---------
 ## グループの設定
 ## ---------

@@ -25,7 +25,6 @@ warn_list:
   - yaml[document-start]
   - yaml[truthy]
   ## custom
-  - yaml[line-length]
   - no-changed-when
   - no-handler
 

@@ -2,7 +2,73 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  check_mode: true
+  become: true
   tasks:
-    - name: Example assertion
+    ## パッケージのテスト
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+    - name: Assert package
       ansible.builtin.assert:
-        that: true
+        that:
+          - ansible_facts.packages['etckeeper']
+          - ansible_facts.packages['ufw']
+          - ansible_facts.packages['fail2ban']
+    ## グループのテスト
+    - name: Check group
+      ansible.builtin.group:
+        name: adm
+      check_mode: true
+      register: result
+    - name: Assert group
+      ansible.builtin.assert:
+        that:
+          - result is not changed
+    # ファイルのテスト
+    - name: Check sshfilter script
+      ansible.builtin.stat:
+        path: /usr/local/bin/sshfilter
+      register: result
+    - name: Assert file
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+          - not result.stat.isdir
+          - result.stat.executable
+    - name: Check backup script directory
+      ansible.builtin.stat:
+        path: /backup/scripts
+      register: result
+    - name: Assert file
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+          - result.stat.isdir
+    - name: Check backup data directory
+      ansible.builtin.stat:
+        path: /backup/data
+      register: result
+    - name: Assert file
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+          - result.stat.isdir
+    ## サービスのテスト
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+    - name: Assert service(fail2ban)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['fail2ban.service']
+          - ansible_facts.services['fail2ban.service']['state'] == 'running'
+          - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
+    - name: Assert service(ufw)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['ufw.service']
+          - ansible_facts.services['ufw.service']['status'] == 'enabled'
+    - name: Assert service(etckeeper)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['etckeeper.service']

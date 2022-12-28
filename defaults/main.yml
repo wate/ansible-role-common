@@ -407,11 +407,10 @@ backup_settings: []
 ## ---------
 common_install_utilities:
   - tig
+  - jq
+  - jc
   - silversearcher-ag
   - exa
-  - jq
-  - fd-find
-  - nkf
   - vnstati
   - glances
   - rclone

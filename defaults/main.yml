@@ -355,12 +355,12 @@ backup_dir: /backup/data
 ## ---------
 backup_settings: []
 # ## バックアップコマンド
-# - name: backup setting
-#   command: mysqldump -u ${DB_USER} -p${DB_PASS} -single-transaction ${DB_NAME} | gzip >{{ backup_dir }}/${DB_NAME}-$(date +"%Y-%m-%d_%H%M%S").sql.gz
+# - name: mariadb backup setting
+#   command: mariadb-backup --backup -u root -p{{ mariadb_root_password | default('') }} --target-dir {{ backup_dir }}/mariadb
 #   ## バックアップ実行日時(時)
-#   hour: 1
+#   hour: 3
 #   ## バックアップ実行日時(分)
-#   minute: 23
+#   minute: 20
 # ## バックアップ実行日時(日)
 # # day: "*"
 # ## バックアップ実行日時(月)

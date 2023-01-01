@@ -1,30 +1,67 @@
 ---
 - name: Verify
   hosts: all
-  gather_facts: false
-  check_mode: true
+  gather_facts: true
   become: true
+  pre_tasks:
+    - name: Install jc command
+      ansible.builtin.apt:
+        update_cache: true
+        name: jc
+      when:
+        - ansible_facts.distribution == 'Debian'
+        - ansible_facts.distribution_major_version == '11'
+    - name: Install jc command
+      when:
+        - ansible_facts.distribution == 'Debian'
+        - ansible_facts.distribution_major_version == '10'
+      block:
+        - name: Install pip package
+          ansible.builtin.apt:
+            name: python3-pip
+        - name: Install jc
+          ansible.builtin.pip:
+            executable: /usr/bin/pip3
+            name: jc
   tasks:
     ## パッケージのテスト
-    - name: Gather the package facts
+    - name: Gather package facts
       ansible.builtin.package_facts:
         manager: auto
     - name: Assert package
       ansible.builtin.assert:
         that:
-          - ansible_facts.packages['etckeeper']
-          - ansible_facts.packages['ufw']
-          - ansible_facts.packages['fail2ban']
+          - ansible_facts.packages['etckeeper'] is defined
+          - ansible_facts.packages['ufw'] is defined
+          - ansible_facts.packages['fail2ban'] is defined
+    ## ユーザーのテスト
+    - name: Gather group facts
+      ansible.builtin.shell:
+        cmd: cat /etc/shadow | jc --shadow
+      changed_when: false
+      register: user_result
+    - name: Set user variable
+      ansible.builtin.set_fact:
+        registerd_users: "{{ user_result.stdout | from_json | map(attribute='username') }}"
+    - name: Assert user
+      ansible.builtin.assert:
+        that:
+          - "'simple' in registerd_users"
+          - "'disable_acount' in registerd_users"
+          - "'full_set' in registerd_users"
     ## グループのテスト
-    - name: Check group
-      ansible.builtin.group:
-        name: adm
-      check_mode: true
-      register: result
+    - name: Gather group facts
+      ansible.builtin.shell:
+        cmd: cat /etc/group | jc --group
+      changed_when: false
+      register: group_result
+    - name: Set group variable
+      ansible.builtin.set_fact:
+        registerd_groups: "{{ group_result.stdout | from_json | map(attribute='group_name') }}"
     - name: Assert group
       ansible.builtin.assert:
         that:
-          - result is not changed
+          - "'adm' in registerd_groups"
     # ファイルのテスト
     - name: Check sshfilter script
       ansible.builtin.stat:

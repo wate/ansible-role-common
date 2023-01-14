@@ -77,7 +77,7 @@
       ansible.builtin.stat:
         path: /backup/scripts
       register: result
-    - name: Assert file
+    - name: Assert backup script directory
       ansible.builtin.assert:
         that:
           - result.stat.exists
@@ -86,11 +86,29 @@
       ansible.builtin.stat:
         path: /backup/data
       register: result
-    - name: Assert file
+    - name: Assert backup data directory
       ansible.builtin.assert:
         that:
           - result.stat.exists
           - result.stat.isdir
+    - name: Check geoip database update script
+      ansible.builtin.stat:
+        path: /etc/cron.weekly/geoip_update
+      register: result
+    - name: Assert geoip database update script
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+    - name: Check geoip database update script
+      ansible.builtin.lineinfile:
+        path: /etc/cron.weekly/geoip_update
+        line: FILES="GeoIP GeoIPv6 GeoIPCity GeoIPCityv6"
+      check_mode: true
+      register: result
+    - name: Assert geoip database download file setting
+      ansible.builtin.assert:
+        that:
+          - result is not changed
     ## サービスのテスト
     - name: Populate service facts
       ansible.builtin.service_facts:

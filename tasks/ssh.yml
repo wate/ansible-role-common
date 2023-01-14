@@ -1,14 +1,24 @@
 ---
-- name: Install geoip packages
+- name: Install GeoIP packages
   ansible.builtin.apt:
     name:
       - geoip-bin
       - geoip-database
-- name: Download geoip database update script
+- name: Download GeoIP database update script
   ansible.builtin.get_url:
     url: https://mailfud.org/geoip-legacy/geoip_update.sh
     dest: /etc/cron.weekly/geoip_update
     mode: "0755"
+- name: Update GeoIP database file setting
+  ansible.builtin.lineinfile:
+    path: /etc/cron.weekly/geoip_update
+    regexp: ^FILES=
+    line: FILES="{{ common_geoip_update_files | join(' ') }}"
+  register: update_geoip_database_files_result
+- name: Execute update GeoIP database
+  ansible.builtin.command:
+    cmd: /etc/cron.weekly/geoip_update
+  when: update_geoip_database_files_result is changed
 - name: Create ssh filter script
   ansible.builtin.template:
     src: ssh/sshfilter.j2

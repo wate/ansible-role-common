@@ -161,12 +161,27 @@ common_ssh_ufw_rule: allow
 ## SSHのGeoIPフィルタの有効/無効
 ## ---------
 common_ssh_use_geoip_filter: true
+
 ## ---------
 ## SSH接続を許可する国コード
 ## ※「common_ssh_use_geoip_filter」が有効な場合のみ設定を行ってください
 ## ---------
 common_ssh_allow_countries:
   - JP
+
+## ---------
+## 自動更新するGeoIPデータベースファイル
+## https://mailfud.org/geoip-legacy/
+## ---------
+common_geoip_update_files:
+  - GeoIP
+  - GeoIPv6
+  - GeoIPCity
+  - GeoIPCityv6
+  # - GeoIPASNum
+  # - GeoIPASNumv6
+  # - GeoIPOrg
+  # - GeoIPISP
 
 ## ---------
 ## ufwのSSHポートのルール

@@ -53,6 +53,11 @@ SSHのGeoIPフィルタの有効/無効
 SSH接続を許可する国コード  
 ※「common_ssh_use_geoip_filter」が有効な場合のみ設定を行ってください
 
+### `common_geoip_update_files`
+
+自動更新するGeoIPデータベースファイル  
+https://mailfud.org/geoip-legacy/
+
 ### `common_repository_enable`
 
 ufwのSSHポートのルール

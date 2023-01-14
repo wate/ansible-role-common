@@ -428,6 +428,7 @@ common_install_utilities:
   - exa
   - vnstati
   - glances
+  - s3fs
   - rclone
 
 ## ---------

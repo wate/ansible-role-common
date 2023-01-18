@@ -101,3 +101,9 @@ backup_settings:
     script_name: test_script_2
     hour: 2
     minute: 34
+
+common_geoip_update_files:
+  - GeoIP
+  - GeoIPv6
+  - GeoIPCity
+  - GeoIPCityv6

@@ -155,7 +155,7 @@ common_sshd_custom_cfg: |
 ## ---------
 ## ufwのSSHポートルール
 ## ---------
-common_ssh_ufw_rule: allow
+common_ssh_ufw_rule: limit
 
 ## ---------
 ## SSHのGeoIPフィルタの有効/無効
@@ -176,8 +176,8 @@ common_ssh_allow_countries:
 common_geoip_update_files:
   - GeoIP
   - GeoIPv6
-  - GeoIPCity
-  - GeoIPCityv6
+  # - GeoIPCity
+  # - GeoIPCityv6
   # - GeoIPASNum
   # - GeoIPASNumv6
   # - GeoIPOrg

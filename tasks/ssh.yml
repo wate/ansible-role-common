@@ -15,7 +15,7 @@
     regexp: ^FILES=
     line: FILES="{{ common_geoip_update_files | join(' ') }}"
   register: update_geoip_database_files_result
-- name: Execute update GeoIP database
+- name: Update GeoIP database
   ansible.builtin.command:
     cmd: /etc/cron.weekly/geoip_update
   when: update_geoip_database_files_result is changed

@@ -34,6 +34,8 @@
           - ansible_facts.packages['etckeeper'] is defined
           - ansible_facts.packages['ufw'] is defined
           - ansible_facts.packages['fail2ban'] is defined
+          - ansible_facts.packages['s3fs'] is defined
+          - ansible_facts.packages['rclone'] is defined
     ## ユーザーのテスト
     - name: Gather group facts
       ansible.builtin.shell:

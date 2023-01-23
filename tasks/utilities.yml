@@ -1,4 +1,13 @@
 ---
-- name: Install utility packages
+- name: Find custom install task files
+  ansible.builtin.set_fact:
+    custom_install_tasks: "{{ lookup('fileglob', 'tasks/utilities/*.yml', wantlist=True) | map('basename') | map('regex_replace', '\\.yml', '') }}"
+- name: Install utility packages(apt)
   ansible.builtin.apt:
-    name: "{{ common_install_utilities }}"
+    name: "{{ common_install_utilities | reject('in', custom_install_tasks) }}"
+- name: Install utility packages(custom)
+  ansible.builtin.include_tasks:
+    file: tasks/utilities/{{ item }}.yml
+  loop: "{{ common_install_utilities | select('in', custom_install_tasks) }}"
+  loop_control:
+    label: "{{ item }}"

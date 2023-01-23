@@ -1,0 +1,20 @@
+---
+- name: Get latest release
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/rclone/rclone/releases/latest
+    headers:
+      Accept: application/vnd.github+json
+  register: latest_releases
+- name: Set tbls_version variable
+  ansible.builtin.set_fact:
+    rclone_version: "{{ latest_releases.json.tag_name }}"
+- name: Set variable
+  ansible.builtin.set_fact:
+    package_file: rclone-{{ rclone_version }}-{{ ansible_facts['system'] | lower }}-{{ architecture_files[ansible_facts['architecture']] }}.deb
+  vars:
+    architecture_files:
+      x86_64: amd64
+      aarch64: arm64
+- name: Install rclone
+  ansible.builtin.apt:
+    deb: https://github.com/rclone/rclone/releases/download/{{ rclone_version }}/{{ package_file }}

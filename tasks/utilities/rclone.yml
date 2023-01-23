@@ -5,7 +5,7 @@
     headers:
       Accept: application/vnd.github+json
   register: latest_releases
-- name: Set tbls_version variable
+- name: Set version variable
   ansible.builtin.set_fact:
     rclone_version: "{{ latest_releases.json.tag_name }}"
 - name: Set variable

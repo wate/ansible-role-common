@@ -1,13 +1,16 @@
 ---
 - name: Get latest release
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/kellyjonbrazil/jc/releases/latest
-    headers:
-      Accept: application/vnd.github+json
-  register: latest_releases
-- name: Set version variable
-  ansible.builtin.set_fact:
-    jc_version: "{{ latest_releases.json.tag_name }}"
+  when: jc_version | default('latest') == 'latest'
+  block:
+    - name: Get jc latest release
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/kellyjonbrazil/jc/releases/latest
+        headers:
+          Accept: application/vnd.github+json
+      register: latest_releases
+    - name: Set version variable
+      ansible.builtin.set_fact:
+        jc_version: "{{ latest_releases.json.tag_name }}"
 - name: Set variable
   ansible.builtin.set_fact:
     package_file: jc_{{ jc_version[1:] }}-1_{{ architecture_files[ansible_facts['architecture']] }}.deb

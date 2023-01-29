@@ -3,26 +3,6 @@
   hosts: all
   gather_facts: true
   become: true
-  pre_tasks:
-    - name: Install jc command
-      ansible.builtin.apt:
-        update_cache: true
-        name: jc
-      when:
-        - ansible_facts.distribution == 'Debian'
-        - ansible_facts.distribution_major_version == '11'
-    - name: Install jc command
-      when:
-        - ansible_facts.distribution == 'Debian'
-        - ansible_facts.distribution_major_version == '10'
-      block:
-        - name: Install pip package
-          ansible.builtin.apt:
-            name: python3-pip
-        - name: Install jc
-          ansible.builtin.pip:
-            executable: /usr/bin/pip3
-            name: jc
   tasks:
     ## パッケージのテスト
     - name: Gather package facts
@@ -34,6 +14,11 @@
           - ansible_facts.packages['etckeeper'] is defined
           - ansible_facts.packages['ufw'] is defined
           - ansible_facts.packages['fail2ban'] is defined
+    - name: Assert utility package
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.packages['glances'] is defined
+          - ansible_facts.packages['jc'] is defined
           - ansible_facts.packages['s3fs'] is defined
           - ansible_facts.packages['rclone'] is defined
     ## ユーザーのテスト
@@ -129,3 +114,9 @@
       ansible.builtin.assert:
         that:
           - ansible_facts.services['etckeeper.service'] is defined
+    - name: Assert service(vnstat)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['vnstat.service'] is defined
+          - ansible_facts.services['vnstat.service']['state'] == 'running'
+          - ansible_facts.services['vnstat.service']['status'] == 'enabled'

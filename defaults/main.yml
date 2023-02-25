@@ -423,6 +423,7 @@ backup_settings: []
 common_install_utilities:
   - tig
   - jq
+  - strace
   - jc
   - silversearcher-ag
   - exa

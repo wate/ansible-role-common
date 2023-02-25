@@ -1,5 +1,5 @@
 ---
-- name: Add repository
+- name: Import repository task
   ansible.builtin.import_tasks:
     file: repository.yml
   tags:
@@ -7,12 +7,12 @@
 - name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
-- name: Setup sudo
+- name: Import sudo task
   ansible.builtin.import_tasks:
     file: sudo.yml
   tags:
     - role_common_sudo
-- name: Set hostname
+- name: Import hostname task
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   tags:
@@ -31,31 +31,31 @@
     file: skeleton.yml
   tags:
     - role_common_skeleton
-- name: Manage user
+- name: Import user task
   ansible.builtin.import_tasks:
     file: user.yml
   tags:
     - role_common_user
-- name: Setup disk partition
+- name: Import disk task
   ansible.builtin.import_tasks:
     file: disk.yml
   tags:
     - role_common_disk
-- name: Setup firewall
+- name: Import firewall task
   ansible.builtin.import_tasks:
     file: firewall.yml
   tags: firewall
-- name: Setup japanese environment
+- name: Import japanese environment task
   ansible.builtin.import_tasks:
     file: japanese.yml
   tags:
     - role_common_japanese
-- name: Setup etckeeper
+- name: Import etckeeper task
   ansible.builtin.import_tasks:
     file: etckeeper.yml
   tags:
     - role_common_etckeeper
-- name: Setup package auto update
+- name: Import package auto update task
   ansible.builtin.import_tasks:
     file: auto_update.yml
   tags:
@@ -65,22 +65,22 @@
     file: files.yml
   tags:
     - role_common_file
-- name: Manage cron
+- name: Import manage cron task
   ansible.builtin.import_tasks:
     file: cron.yml
   tags:
     - role_common_cron
-- name: Manage log
+- name: Import manage log task
   ansible.builtin.import_tasks:
     file: log.yml
   tags:
     - role_common_log
-- name: Setup sshd
+- name: Import setup sshd task
   ansible.builtin.import_tasks:
     file: sshd.yml
   tags:
     - role_common_sshd
-- name: Setup ssh
+- name: Import setup ssh task
   ansible.builtin.import_tasks:
     file: ssh.yml
   tags:
@@ -90,22 +90,22 @@
     file: fail2ban.yml
   tags:
     - role_common_fail2ban
-- name: Setup swap
+- name: Import setup swap task
   ansible.builtin.import_tasks:
     file: swap.yml
   tags:
     - role_common_swap
-- name: Manage mount setting
+- name: Import manage mount task
   ansible.builtin.import_tasks:
     file: mount.yml
   tags:
     - role_common_mount
-- name: Manage backup setting
+- name: Import manage backup setting task
   ansible.builtin.import_tasks:
     file: backup.yml
   tags:
     - role_common_backup
-- name: Setup other utilities
+- name: Import utilities task
   ansible.builtin.import_tasks:
     file: utilities.yml
   tags:

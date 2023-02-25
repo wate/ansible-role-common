@@ -1,18 +1,22 @@
 ---
 - name: Add repository
-  ansible.builtin.import_tasks: repository.yml
-  tags: repository
+  ansible.builtin.import_tasks:
+    file: repository.yml
+  tags:
+    - role_common_repository
 - name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
 - name: Setup sudo
-  ansible.builtin.import_tasks: sudo.yml
-  tags: sudo
+  ansible.builtin.import_tasks:
+    file: sudo.yml
+  tags:
+    - role_common_sudo
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   tags:
-    - hostname
+    - role_common_hostname
     - molecule-notest
 - name: Change home directory permission
   ansible.builtin.file:
@@ -23,53 +27,86 @@
   ansible.builtin.apt:
     name: "{{ common_packages }}"
 - name: Manage user skeleton directory
-  ansible.builtin.import_tasks: skeleton.yml
-  tags: skeleton
+  ansible.builtin.import_tasks:
+    file: skeleton.yml
+  tags:
+    - role_common_skeleton
 - name: Manage user
-  ansible.builtin.import_tasks: user.yml
-  tags: user
+  ansible.builtin.import_tasks:
+    file: user.yml
+  tags:
+    - role_common_user
 - name: Setup disk partition
-  ansible.builtin.import_tasks: disk.yml
-  tags: disk
+  ansible.builtin.import_tasks:
+    file: disk.yml
+  tags:
+    - role_common_disk
 - name: Setup firewall
-  ansible.builtin.import_tasks: firewall.yml
+  ansible.builtin.import_tasks:
+    file: firewall.yml
   tags: firewall
 - name: Setup japanese environment
-  ansible.builtin.import_tasks: japanese.yml
-  tags: japanese
+  ansible.builtin.import_tasks:
+    file: japanese.yml
+  tags:
+    - role_common_japanese
 - name: Setup etckeeper
-  ansible.builtin.import_tasks: etckeeper.yml
-  tags: etckeeper
+  ansible.builtin.import_tasks:
+    file: etckeeper.yml
+  tags:
+    - role_common_etckeeper
 - name: Setup package auto update
-  ansible.builtin.import_tasks: auto_update.yml
-  tags: auto_update
+  ansible.builtin.import_tasks:
+    file: auto_update.yml
+  tags:
+    - role_common_auto_update
 - name: Manage files
-  ansible.builtin.import_tasks: files.yml
-  tags: file
+  ansible.builtin.import_tasks:
+    file: files.yml
+  tags:
+    - role_common_file
 - name: Manage cron
-  ansible.builtin.import_tasks: cron.yml
-  tags: cron
+  ansible.builtin.import_tasks:
+    file: cron.yml
+  tags:
+    - role_common_cron
 - name: Manage log
-  ansible.builtin.import_tasks: log.yml
-  tags: log
+  ansible.builtin.import_tasks:
+    file: log.yml
+  tags:
+    - role_common_log
 - name: Setup sshd
-  ansible.builtin.import_tasks: sshd.yml
-  tags: sshd
+  ansible.builtin.import_tasks:
+    file: sshd.yml
+  tags:
+    - role_common_sshd
 - name: Setup ssh
-  ansible.builtin.import_tasks: ssh.yml
-  tags: ssh
+  ansible.builtin.import_tasks:
+    file: ssh.yml
+  tags:
+    - role_common_ssh
 - name: Setup fail2ban
-  ansible.builtin.import_tasks: fail2ban.yml
-  tags: fail2ban
+  ansible.builtin.import_tasks:
+    file: fail2ban.yml
+  tags:
+    - role_common_fail2ban
 - name: Setup swap
-  ansible.builtin.import_tasks: swap.yml
-  tags: swap
+  ansible.builtin.import_tasks:
+    file: swap.yml
+  tags:
+    - role_common_swap
 - name: Manage mount setting
-  ansible.builtin.import_tasks: mount.yml
-  tags: mount
+  ansible.builtin.import_tasks:
+    file: mount.yml
+  tags:
+    - role_common_mount
 - name: Manage backup setting
-  ansible.builtin.import_tasks: backup.yml
-  tags: backup
+  ansible.builtin.import_tasks:
+    file: backup.yml
+  tags:
+    - role_common_backup
 - name: Setup other utilities
-  ansible.builtin.import_tasks: utilities.yml
-  tags: utilities
+  ansible.builtin.import_tasks:
+    file: utilities.yml
+  tags:
+    - role_common_utilities

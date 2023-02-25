@@ -6,8 +6,11 @@
   ansible.builtin.apt:
     name: "{{ common_japanese_fonts }}"
 - name: Install other japanse fonts
-  ansible.builtin.include_tasks: japanese/{{ item }}.yml
+  ansible.builtin.include_tasks: japanese/{{ font }}.yml
   loop: "{{ other_japanese_fonts }}"
+  loop_control:
+    label: "{{ font }}"
+    loop_var: font
   vars:
     other_japanese_fonts:
       - morisawa-biz-ud

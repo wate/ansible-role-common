@@ -418,22 +418,32 @@ backup_settings: []
 #   minute: 45
 
 ## ---------
-## glances用追加インストールパッケージ
+## glances用の追加インストールするパッケージ
 ## ---------
 glances_additional_packages: []
-#   ## ----------------
-#   ## Exports package
-#   ## ----------------
-#   # Cassandra export module
+#   # for the Cassandra export module
 #   - python3-cassandra
-#   # ElasticSearch export module
+#   # for the Elastic Search export module
 #   - python3-elasticsearch
-#   # Kafka export module
+#   # for the Kafka export module
 #   - python3-kafka
-#   # RabbitMQ/ActiveMQ export module
+#   # for the RabbitMQ/ActiveMQ export module
 #   - python3-pika
-#   # MongoDB export module
+#   # for the graph export module
+#   - python3-pygal
+#   # for the MongoDB export module
 #   - python3-pymongo
+#   # for the autodiscover mode
+#   - python3-zeroconf
+
+## ---------
+## glances用の追加インストールするpipパッケージ
+## ---------
+glances_additional_pip_packages: []
+#   # for the Prometheus export module
+#   - prometheus_client
+#   # for the InfluxDB version 2 export module
+#   - influxdb-client
 
 ## ---------
 ## glancesの設定

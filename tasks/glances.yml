@@ -1,0 +1,4 @@
+---
+- name: Install glances
+  ansible.builtin.apt:
+    name: glances

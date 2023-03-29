@@ -105,6 +105,11 @@
     file: backup.yml
   tags:
     - role_common_backup
+- name: Import glances task
+  ansible.builtin.import_tasks:
+    file: glances.yml
+  tags:
+    - role_common_glances
 - name: Import utilities task
   ansible.builtin.import_tasks:
     file: utilities.yml

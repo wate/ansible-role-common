@@ -10,3 +10,4 @@
   loop_control:
     label: "{{ glances_setting_section.name }}.{{ glances_setting_option.name }}"
     loop_var: glances_setting_option
+  notify: restart glances

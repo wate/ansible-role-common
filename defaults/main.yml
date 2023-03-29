@@ -449,6 +449,13 @@ glances_setting: {}
 #     prefix: foo
 
 ## ---------
+## glancesのサービス設定
+## ---------
+glances_service_setting:
+  running: false
+  enabled: false
+
+## ---------
 ## インストールするユーティリティパッケージ
 ## ---------
 common_install_utilities:

@@ -2,3 +2,6 @@
 - name: Install glances
   ansible.builtin.apt:
     name: glances
+- name: Install additional packages
+  ansible.builtin.apt:
+    name: "{{ glances_additional_packages }}"

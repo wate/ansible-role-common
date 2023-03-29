@@ -418,7 +418,7 @@ backup_settings: []
 #   minute: 45
 
 ## ---------
-## glances用の追加インストールするパッケージ
+## glances用の追加インストールパッケージ
 ## ---------
 glances_additional_packages: []
 #   # for the Cassandra export module
@@ -437,7 +437,7 @@ glances_additional_packages: []
 #   - python3-zeroconf
 
 ## ---------
-## glances用の追加インストールするpipパッケージ
+## glances用の追加インストールパッケージ(pip)
 ## ---------
 glances_additional_pip_packages: []
 #   # for the Prometheus export module

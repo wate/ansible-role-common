@@ -24,7 +24,9 @@
     ## ユーザーのテスト
     - name: Gather group facts
       ansible.builtin.shell:
-        cmd: cat /etc/shadow | jc --shadow
+        cmd: |
+          set -o pipefail
+          cat /etc/shadow | jc --shadow
       changed_when: false
       register: user_result
     - name: Set user variable
@@ -39,7 +41,9 @@
     ## グループのテスト
     - name: Gather group facts
       ansible.builtin.shell:
-        cmd: cat /etc/group | jc --group
+        cmd: |
+          set -o pipefail
+          cat /etc/group | jc --group
       changed_when: false
       register: group_result
     - name: Set group variable

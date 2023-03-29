@@ -15,3 +15,8 @@
   ansible.builtin.systemd:
     name: ssh
     state: restarted
+- name: restart glances
+  ansible.builtin.systemd:
+    name: glances
+    state: restarted
+  when: glances_service_setting.running

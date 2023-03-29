@@ -128,6 +128,22 @@ cronの設定
 
 バックアップの設定
 
+### `glances_additional_packages`
+
+glances用の追加インストールパッケージ
+
+### `glances_additional_pip_packages`
+
+glances用の追加インストールパッケージ(pip)
+
+### `glances_setting`
+
+glancesの設定
+
+### `glances_service_setting`
+
+glancesのサービス設定
+
 ### `common_install_utilities`
 
 インストールするユーティリティパッケージ

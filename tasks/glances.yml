@@ -1,0 +1,23 @@
+---
+- name: Install glances
+  ansible.builtin.apt:
+    name:
+      - glances
+      - python3-pip
+- name: Install additional packages
+  ansible.builtin.apt:
+    name: "{{ glances_additional_packages }}"
+- name: Install additional pip packages
+  ansible.builtin.pip:
+    name: "{{ glances_additional_pip_packages }}"
+- name: Update glances setting
+  ansible.builtin.include_tasks:
+    file: glances/setting.yml
+  loop: "{{ glances_setting | dict2items(key_name='name', value_name='options') }}"
+  loop_control:
+    loop_var: glances_setting_section
+- name: Set glances service setting
+  ansible.builtin.systemd:
+    name: glances
+    state: "{{ glances_service_setting.running | ternary('started', 'stopped') }}"
+    enabled: "{{ glances_service_setting.enabled }}"

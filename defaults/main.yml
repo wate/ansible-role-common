@@ -418,6 +418,54 @@ backup_settings: []
 #   minute: 45
 
 ## ---------
+## glances用の追加インストールパッケージ
+## ---------
+glances_additional_packages: []
+#   # for the Cassandra export module
+#   - python3-cassandra
+#   # for the Elastic Search export module
+#   - python3-elasticsearch
+#   # for the Kafka export module
+#   - python3-kafka
+#   # for the RabbitMQ/ActiveMQ export module
+#   - python3-pika
+#   # for the graph export module
+#   - python3-pygal
+#   # for the MongoDB export module
+#   - python3-pymongo
+#   # for the autodiscover mode
+#   - python3-zeroconf
+
+## ---------
+## glances用の追加インストールパッケージ(pip)
+## ---------
+glances_additional_pip_packages: []
+#   # for the Prometheus export module
+#   - prometheus_client
+#   # for the InfluxDB version 2 export module
+#   - influxdb-client
+
+## ---------
+## glancesの設定
+## ---------
+glances_setting: {}
+#   influxdb2:
+#     host: localhost
+#     port: 8086
+#     protocol: http
+#     org: nicolargo
+#     bucket: glances
+#     token: abcdefghijklmnopqrstuvwxyz
+#     prefix: foo
+
+## ---------
+## glancesのサービス設定
+## ---------
+glances_service_setting:
+  running: false
+  enabled: false
+
+## ---------
 ## インストールするユーティリティパッケージ
 ## ---------
 common_install_utilities:
@@ -428,7 +476,6 @@ common_install_utilities:
   - silversearcher-ag
   - exa
   - vnstati
-  - glances
   - s3fs
   - rclone
 

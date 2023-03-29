@@ -436,6 +436,19 @@ glances_additional_packages: []
 #   - python3-pymongo
 
 ## ---------
+## glancesの設定
+## ---------
+glances_setting: {}
+#   influxdb2:
+#     host: localhost
+#     port: 8086
+#     protocol: http
+#     org: nicolargo
+#     bucket: glances
+#     token: abcdefghijklmnopqrstuvwxyz
+#     prefix: foo
+
+## ---------
 ## インストールするユーティリティパッケージ
 ## ---------
 common_install_utilities:

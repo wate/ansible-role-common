@@ -1,0 +1,12 @@
+---
+- name: Update glances setting
+  community.general.ini_file:
+    path: /etc/glances/glances.conf
+    section: "{{ glances_setting_section.name }}"
+    option: "{{ glances_setting_option.name }}"
+    value: "{{ glances_setting_option.value }}"
+    mode: "0644"
+  loop: "{{ glances_setting_section.options | dict2items(key_name='name', value_name='value') }}"
+  loop_control:
+    label: "{{ glances_setting_section.name }}.{{ glances_setting_option.name }}"
+    loop_var: glances_setting_option

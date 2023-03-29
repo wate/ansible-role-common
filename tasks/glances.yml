@@ -5,3 +5,9 @@
 - name: Install additional packages
   ansible.builtin.apt:
     name: "{{ glances_additional_packages }}"
+- name: Update glances setting
+  ansible.builtin.include_tasks:
+    file: glances/setting.yml
+  loop: "{{ glances_setting | dict2items(key_name='name', value_name='options') }}"
+  loop_control:
+    loop_var: glances_setting_section

@@ -4,12 +4,13 @@
     name:
       - glances
       - python3-pip
-- name: Install additional packages
+- name: Install glances additional packages
   ansible.builtin.apt:
     name: "{{ glances_additional_packages }}"
-- name: Install additional pip packages
+- name: Install glances additional pip packages
   ansible.builtin.pip:
     name: "{{ glances_additional_pip_packages }}"
+  when: glances_additional_pip_packages | length > 0
 - name: Update glances setting
   ansible.builtin.include_tasks:
     file: glances/setting.yml

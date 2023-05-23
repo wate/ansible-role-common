@@ -8,7 +8,7 @@
     regexp: ^{{ item.key }}=
     line: '{{ item.key }}="{{ item.value }}"'
   loop: "{{ auto_update_cfg | dict2items }}"
-- name: Remove donload-only option
+- name: Remove download-only option
   ansible.builtin.lineinfile:
     path: /etc/cron-apt/action.d/3-download
     regexp: "^dist-upgrade "

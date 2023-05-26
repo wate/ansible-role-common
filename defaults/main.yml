@@ -29,6 +29,7 @@ common_packages:
   - bison
   - flex
   - acl
+  - gpg
   - pkg-config
   - imagemagick
   - postfix

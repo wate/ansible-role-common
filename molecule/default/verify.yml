@@ -105,17 +105,18 @@
     ## サービスのテスト
     - name: Populate service facts
       ansible.builtin.service_facts:
+    - name: Assert service(rsyslog)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['rsyslog.service'] is defined
+          - ansible_facts.services['rsyslog.service']['state'] == 'running'
+          - ansible_facts.services['rsyslog.service']['status'] == 'enabled'
     - name: Assert service(fail2ban)
       ansible.builtin.assert:
         that:
           - ansible_facts.services['fail2ban.service'] is defined
           - ansible_facts.services['fail2ban.service']['state'] == 'running'
           - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
-    - name: Assert service(ufw)
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.services['ufw.service'] is defined
-          - ansible_facts.services['ufw.service']['status'] == 'enabled'
     - name: Assert service(etckeeper)
       ansible.builtin.assert:
         that:
@@ -126,10 +127,24 @@
           - ansible_facts.services['vnstat.service'] is defined
           - ansible_facts.services['vnstat.service']['state'] == 'running'
           - ansible_facts.services['vnstat.service']['status'] == 'enabled'
-          - name: Assert service(vnstat)
     - name: Assert service(glances)
       ansible.builtin.assert:
         that:
           - ansible_facts.services['glances.service'] is defined
           - ansible_facts.services['glances.service']['state'] == 'inactive'
           - ansible_facts.services['glances.service']['status'] == 'disabled'
+    - name: Gather ufw status
+      ansible.builtin.shell:
+        cmd: |
+          set -eo pipefail
+          ufw status verbose | jc --ufw
+        executable: /bin/bash
+      changed_when: false
+      register: result
+    - name: Set ufw variable
+      ansible.builtin.set_fact:
+        ufw: "{{ result.stdout | from_json }}"
+    - name: Assert service(ufw)
+      ansible.builtin.assert:
+        that:
+          - ufw.status == 'active'

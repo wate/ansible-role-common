@@ -1,4 +1,7 @@
 ---
+- name: Install rsyslog
+  ansible.builtin.apt:
+    name: rsyslog
 - name: Add/update log setting
   ansible.builtin.template:
     src: log/rsyslog/custom.conf.j2

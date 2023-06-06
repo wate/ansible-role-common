@@ -88,12 +88,12 @@ common_users: []
 #         StrictHostKeyChecking no
 #   # コントロールマシン上の秘密鍵をターゲットマシンの該当ユーザーの~/.ssh/{name}に配置します
 #   upload_private_keys:
-#     - name: github_deploy_key
-#       src: ~/.ssh/github
-#     - name: bitbucket_deploy_key
-#       src: ~/.ssh/bitbucket
-#     - name: gitlab_deploy_key
-#       src: ~/.ssh/gitlab
+#     - src: ~/.ssh/github
+#       name: github_deploy_key
+#     - src: ~/.ssh/bitbucket
+#       name: bitbucket_deploy_key
+#     - src: ~/.ssh/gitlab
+#       name: gitlab_deploy_key
 #   secret_vars:
 #     - name: DB_HOST
 #       value: localhost

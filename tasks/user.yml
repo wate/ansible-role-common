@@ -71,6 +71,19 @@
     label: "{{ item.0.name }} : {{ item.1.name }}"
   become: true
   become_user: "{{ item.0.name }}"
+- name: Add load secret env on .bashrc
+  ansible.builtin.blockinfile:
+    path: ~/.bashrc
+    marker: "# {mark} load secret env ANSIBLE MANAGED BLOCK"
+    content: |
+      if [ -f "$HOME/.secret" ]; then
+        . "$HOME/.secret"
+      fi
+  loop: "{{ existing_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  become_user: "{{ item.name }}"
 - name: Manage secret variable
   ansible.builtin.lineinfile:
     path: ~/.secret
@@ -79,11 +92,11 @@
     create: true
     mode: "0600"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
-  become_user: "{{ item.0.name }}"
-  become: true
   loop: "{{ existing_users | subelements('secret_vars', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
+  become: true
+  become_user: "{{ item.0.name }}"
   tags: secret
 - name: Add admin group for admin users
   ansible.builtin.user:

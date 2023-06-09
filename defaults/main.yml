@@ -479,6 +479,7 @@ common_install_utilities:
   - vnstati
   - s3fs
   - rclone
+  - restic
 
 ## ---------
 ## 日本語フォント(パッケージ)の設定

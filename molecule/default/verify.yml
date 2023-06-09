@@ -14,13 +14,17 @@
           - ansible_facts.packages['etckeeper'] is defined
           - ansible_facts.packages['ufw'] is defined
           - ansible_facts.packages['fail2ban'] is defined
+          - ansible_facts.packages['glances'] is defined
     - name: Assert utility package
       ansible.builtin.assert:
         that:
-          - ansible_facts.packages['glances'] is defined
+          - ansible_facts.packages['tig'] is defined
+          - ansible_facts.packages['jq'] is defined
           - ansible_facts.packages['jc'] is defined
           - ansible_facts.packages['s3fs'] is defined
+          - ansible_facts.packages['strace'] is defined
           - ansible_facts.packages['rclone'] is defined
+          - ansible_facts.packages['restic'] is defined
     ## ユーザーのテスト
     - name: Gather group facts
       ansible.builtin.shell:

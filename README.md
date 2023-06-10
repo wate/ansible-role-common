@@ -58,9 +58,9 @@ SSH接続を許可する国コード
 自動更新するGeoIPデータベースファイル  
 https://mailfud.org/geoip-legacy/
 
-### `common_repository_enable`
+### `common_apt_default_release_backports`
 
-ufwのSSHポートのルール
+backportsをデフォルトリリースに設定する
 
 ### `common_cron_geoip_update`
 

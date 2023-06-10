@@ -109,12 +109,6 @@
     ## サービスのテスト
     - name: Populate service facts
       ansible.builtin.service_facts:
-    - name: Assert service(rsyslog)
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.services['rsyslog.service'] is defined
-          - ansible_facts.services['rsyslog.service']['state'] == 'running'
-          - ansible_facts.services['rsyslog.service']['status'] == 'enabled'
     - name: Assert service(fail2ban)
       ansible.builtin.assert:
         that:

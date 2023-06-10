@@ -185,9 +185,9 @@ common_geoip_update_files:
   # - GeoIPISP
 
 ## ---------
-## ufwのSSHポートのルール
+## backportsをデフォルトリリースに設定する
 ## ---------
-common_repository_enable: true
+common_apt_default_release_backports: true
 
 ## ---------
 ## GeoIPの自動更新設定
@@ -221,6 +221,7 @@ rsyslog_custom_cfg: |
 ## 管理者グループ名
 ## ---------
 admin_group_name: adm
+
 ## ---------
 ## 管理者グループに所属するユーザーがsudo実行時にパスワードの入力を行うか否か
 ## ---------

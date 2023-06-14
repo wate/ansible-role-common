@@ -185,7 +185,7 @@ common_geoip_update_files:
   # - GeoIPISP
 
 ## ---------
-## backportsをデフォルトリリースに設定する
+## backportsをデフォルトリリースに設定するか否か
 ## ---------
 common_apt_default_release_backports: true
 

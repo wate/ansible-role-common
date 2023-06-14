@@ -60,7 +60,7 @@ https://mailfud.org/geoip-legacy/
 
 ### `common_apt_default_release_backports`
 
-backportsをデフォルトリリースに設定する
+backportsをデフォルトリリースに設定するか否か
 
 ### `common_cron_geoip_update`
 

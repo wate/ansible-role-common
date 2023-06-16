@@ -140,9 +140,18 @@ glances用の追加インストールパッケージ(pip)
 
 glancesの設定
 
+### `glances_service_params`
+
+glancesのサービス用コマンドラインパラメーター  
+@see https://glances.readthedocs.io/en/latest/cmds.html
+
 ### `glances_service_setting`
 
 glancesのサービス設定
+
+### `glances_allow_ports`
+
+glancesサービスのために開放するポート
 
 ### `common_install_utilities`
 

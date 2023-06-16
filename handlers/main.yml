@@ -19,4 +19,5 @@
   ansible.builtin.systemd:
     name: glances
     state: restarted
+    daemon_reload: true
   when: glances_service_setting.running

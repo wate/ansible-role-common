@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    ## サービスのテスト
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+    - name: Assert service(glances)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['glances.service'] is defined
+          - ansible_facts.services['vnstat.service']['state'] == 'running'
+          - ansible_facts.services['vnstat.service']['status'] == 'enabled'
+    ## 待受ポートのテスト
+    - name: Gather facts on listening ports
+      community.general.listen_ports_facts:
+        command: ss
+    - name: Set assert variables
+      ansible.builtin.set_fact:
+        listen_tcp_posts: "{{ ansible_facts.tcp_listen | map(attribute='port') | unique | list }}"
+        listen_udp_posts: "{{ ansible_facts.udp_listen | map(attribute='port') | unique | list }}"
+    - name: Assert listen port
+      ansible.builtin.assert:
+        that:
+          - 61209 in listen_tcp_posts

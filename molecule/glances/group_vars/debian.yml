@@ -1,0 +1,11 @@
+---
+glances_service_params:
+  - -s
+
+glances_service_setting:
+  running: true
+  enabled: true
+
+glances_allow_ports:
+  # Serve rmode
+  - 61209

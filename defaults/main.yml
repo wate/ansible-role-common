@@ -423,6 +423,14 @@ backup_settings: []
 ## glances用の追加インストールパッケージ
 ## ---------
 glances_additional_packages: []
+#   # IP plugin
+#   - python3-netifaces
+#   # Web server mode
+#   - python3-bottle
+#   # Containers Docker monitoring support
+#   - python3-docker
+#   # Cloud plugins and RESTful export module
+#   - python3-requests
 #   # for the Cassandra export module
 #   - python3-cassandra
 #   # for the Elastic Search export module
@@ -461,11 +469,28 @@ glances_setting: {}
 #     prefix: foo
 
 ## ---------
+## glancesのサービス用コマンドラインパラメーター
+## @see https://glances.readthedocs.io/en/latest/cmds.html
+## ---------
+glances_service_params:
+  - -s
+  - -B 127.0.0.1
+
+## ---------
 ## glancesのサービス設定
 ## ---------
 glances_service_setting:
   running: false
   enabled: false
+
+## ---------
+## glancesサービスのために開放するポート
+## ---------
+glances_allow_ports: []
+#   # Serve rmode
+#   - 61209
+#   # Web Server mode
+#   - 61208
 
 ## ---------
 ## インストールするユーティリティパッケージ

@@ -17,8 +17,20 @@
   loop: "{{ glances_setting | dict2items(key_name='name', value_name='options') }}"
   loop_control:
     loop_var: glances_setting_section
+- name: Create glances systemd unit file
+  ansible.builtin.template:
+    src: glances/glances.service.j2
+    dest: /lib/systemd/system/glances.service
+    mode: "0644"
+  notify: restart glances
 - name: Set glances service setting
   ansible.builtin.systemd:
     name: glances
     state: "{{ glances_service_setting.running | ternary('started', 'stopped') }}"
     enabled: "{{ glances_service_setting.enabled }}"
+- name: Ensure allow glances port
+  community.general.ufw:
+    port: "{{ item | string }}"
+    proto: tcp
+    rule: allow
+  loop: "{{ glances_allow_ports }}"

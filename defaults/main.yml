@@ -502,6 +502,7 @@ common_install_utilities:
   - jc
   - silversearcher-ag
   - exa
+  - bat
   - vnstati
   - s3fs
   - rclone

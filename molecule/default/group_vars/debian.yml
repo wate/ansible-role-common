@@ -21,6 +21,11 @@ common_users:
         removed: true
     admin: true
     shell: /usr/bin/bash
+    directories:
+      - name: bin
+        mdoe: "0700"
+      - name: log
+        mdoe: "0700"
     ssh_config:
       - name: github.com
         content: |

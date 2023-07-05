@@ -106,6 +106,16 @@
   loop: "{{ existing_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', true) | list }}"
   loop_control:
     label: "{{ item.name }}"
+- name: Create user directories
+  ansible.builtin.file:
+    path: ~/{{ item.1.name }}
+    state: directory
+    mode: "{{ item.1.mode | default('0700') }}"
+  become: true
+  become_user: "{{ item.0.name }}"
+  loop: "{{ existing_users | subelements('directories', skip_missing=True) | list }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: Manage cron job variavle
   community.general.cronvar:
     user: "{{ item.0.name }}"

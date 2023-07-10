@@ -156,6 +156,7 @@ common_ssh_port: 22
 ## SSHのカスタム設定
 ## ---------
 common_sshd_custom_cfg: |
+  PubkeyAuthentication yes
   #PasswordAuthentication no
   #Port 2222
 

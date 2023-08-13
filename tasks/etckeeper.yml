@@ -7,11 +7,14 @@
     path: /etc/.git
   register: result
 - name: Initilize etckeeper
-  ansible.builtin.command:
-    cmd: etckeeper init
-    chdir: /etc
   when: not result.stat.exists
-- name: Initial commit
-  ansible.builtin.command:
-    cmd: etckeeper commit "Initial commit"
-  when: not result.stat.exists
+  block:
+    - name: Initilize repository
+      ansible.builtin.command:
+        cmd: etckeeper init
+        chdir: /etc
+      changed_when: true
+    - name: Initial commit
+      ansible.builtin.command:
+        cmd: etckeeper commit "Initial commit"
+      changed_when: true

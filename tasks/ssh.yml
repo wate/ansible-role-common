@@ -14,11 +14,7 @@
     path: /etc/cron.weekly/geoip_update
     regexp: ^FILES=
     line: FILES="{{ common_geoip_update_files | join(' ') }}"
-  register: update_geoip_database_files_result
-- name: Update GeoIP database
-  ansible.builtin.command:
-    cmd: /etc/cron.weekly/geoip_update
-  when: update_geoip_database_files_result is changed
+  notify: Update GeoIP database
 - name: Create ssh filter script
   ansible.builtin.template:
     src: ssh/sshfilter.j2

@@ -90,6 +90,11 @@
     file: fail2ban.yml
   tags:
     - role_common_fail2ban
+- name: Setup Postfix
+  ansible.builtin.import_tasks:
+    file: postfix.yml
+  tags:
+    - role_common_postfix
 - name: Import setup swap task
   ansible.builtin.import_tasks:
     file: swap.yml

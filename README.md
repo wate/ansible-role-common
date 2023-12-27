@@ -86,6 +86,10 @@ syslogの追加設定
 
 パッケージの自動更新(cron-apt)のカスタム設定
 
+### `common_postfix_settings`
+
+Postfixの設定
+
 ### `common_swapfile_path`
 
 スワップファイルのパス  

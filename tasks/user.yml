@@ -140,7 +140,7 @@
   loop: "{{ existing_users | subelements('cron_jobs', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
-- name: Set root lock status
+- name: Set root account lock status
   ansible.builtin.user:
     name: root
     password_lock: "{{ common_root_lock }}"

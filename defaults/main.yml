@@ -246,6 +246,15 @@ auto_update_cfg:
   # EXITON: error
 
 ## ---------
+## Postfixの設定
+## ---------
+common_postfix_settings: []
+#   - key: myhostname
+#     value: example.com
+#   - key: mydestination
+#     value: $myhostname, localdomain, localhost, localhost.localdomain, localhost
+
+## ---------
 ## スワップファイルのパス
 ## ※スワップ領域が存在する場合、この変数に設定は無視されます
 ## ---------

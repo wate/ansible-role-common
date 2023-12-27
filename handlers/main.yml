@@ -11,6 +11,10 @@
   ansible.builtin.systemd:
     name: rsyslog
     state: restarted
+- name: restart postfix
+  ansible.builtin.systemd:
+    name: postfix
+    state: restarted
 - name: restart sshd
   ansible.builtin.systemd:
     name: ssh

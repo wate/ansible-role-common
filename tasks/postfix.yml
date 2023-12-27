@@ -1,0 +1,8 @@
+---
+- name: Update Postfix config
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: ^{{ item.key }}\s*=
+    line: "{{ item.key }} = {{ item.value }}"
+  loop: "{{ common_postfix_settings }}"
+  notify: restart postfix

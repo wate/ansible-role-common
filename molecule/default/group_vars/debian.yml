@@ -112,3 +112,9 @@ common_geoip_update_files:
   - GeoIPv6
   - GeoIPCity
   - GeoIPCityv6
+
+common_postfix_settings:
+  - key: myhostname
+    value: example.com
+  - key: mydestination
+    value: $myhostname, localdomain, localhost, localhost.localdomain, localhost

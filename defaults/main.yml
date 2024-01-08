@@ -250,9 +250,9 @@ auto_update_cfg:
 ## ---------
 common_postfix_settings: []
 #   - key: myhostname
-#     value: example.com
+#     value: "{{ inventory_hostname }}"
 #   - key: mydestination
-#     value: $myhostname, localdomain, localhost, localhost.localdomain, localhost
+#     value: "{{ ['$myhostname', 'localdomain', 'localhost', 'localhost.localdomain', 'localhost'] | join(', ') }}"
 
 ## ---------
 ## スワップファイルのパス

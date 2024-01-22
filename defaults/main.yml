@@ -203,6 +203,19 @@ common_cron_geoip_update:
   hour: 4
   minute: 0
 
+## ---------
+## Postfixの設定
+## ---------
+postfix_cfg: {}
+#   myhostname: "{{ inventory_hostname }}"
+#   mydestination: "{{ ['$myhostname', 'localdomain', 'localhost', 'localhost.localdomain', 'localhost'] | join(', ') }}"
+#   smtpd_tls_cert_file: /var/lib/dehydrated/certs/{{ inventory_hostname }}/fullchain.pem
+#   smtpd_tls_key_file: /var/lib/dehydrated/certs/{{ inventory_hostname }}/privkey.pem
+#   inet_interfaces: all
+
+## ---------
+## rootアカウントのパスワードロックを行うか否か
+## ---------
 # common_root_lock: false
 
 ## ---------
@@ -244,15 +257,6 @@ auto_update_cfg:
   # MAILON: error
   # SYSLOGON: upgrade
   # EXITON: error
-
-## ---------
-## Postfixの設定
-## ---------
-common_postfix_settings: []
-#   - key: myhostname
-#     value: "{{ inventory_hostname }}"
-#   - key: mydestination
-#     value: "{{ ['$myhostname', 'localdomain', 'localhost', 'localhost.localdomain', 'localhost'] | join(', ') }}"
 
 ## ---------
 ## スワップファイルのパス

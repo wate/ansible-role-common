@@ -4,5 +4,5 @@
     path: /etc/postfix/main.cf
     regexp: ^{{ item.key }}\s*=
     line: "{{ item.key }} = {{ item.value }}"
-  loop: "{{ common_postfix_settings }}"
+  loop: "{{ postfix_cfg | dict2items }}"
   notify: restart postfix

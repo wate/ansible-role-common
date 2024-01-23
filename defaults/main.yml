@@ -69,9 +69,11 @@ common_users: []
 #     shell: /bin/nologin
 #     directories:
 #       - name: bin
-#         mdoe: "0700"
+#         mode: "0700"
 #       - name: log
-#         mdoe: "0700"
+#         mode: "0700"
+#       - name: www
+#         link_target: /var/www/html
 #     ssh_config:
 #       - name: github.com
 #         content: |

@@ -4,10 +4,12 @@
   gather_facts: true
   become: true
   tasks:
-    ## パッケージのテスト
     - name: Gather package facts
       ansible.builtin.package_facts:
         manager: auto
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+    ## パッケージのテスト
     - name: Assert package
       ansible.builtin.assert:
         that:
@@ -106,9 +108,19 @@
       ansible.builtin.assert:
         that:
           - result is not changed
+    - name: Check Web server docroot symlink
+      ansible.builtin.stat:
+        path: /home/full_set/www
+      register: result
+    - name: Assert docroot symlink
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+          - result.stat.islnk
+          - result.stat.pw_name == 'full_set'
+          - result.stat.gr_name == 'full_set'
+          - result.stat.lnk_source == '/var/www/html'
     ## サービスのテスト
-    - name: Populate service facts
-      ansible.builtin.service_facts:
     - name: Assert service(fail2ban)
       ansible.builtin.assert:
         that:

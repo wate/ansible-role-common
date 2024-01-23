@@ -109,8 +109,9 @@
 - name: Create user directories
   ansible.builtin.file:
     path: ~/{{ item.1.name }}
-    state: directory
-    mode: "{{ item.1.mode | default('0700') }}"
+    src: "{{ item.1.link_target | default(omit) }}"
+    state: "{{ 'directory' if item.1.link_target is undefined else 'link' }}"
+    mode: "{{ item.1.mode | default(omit) }}"
   become: true
   become_user: "{{ item.0.name }}"
   loop: "{{ existing_users | subelements('directories', skip_missing=True) | list }}"

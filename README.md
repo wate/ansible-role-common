@@ -66,6 +66,10 @@ backportsをデフォルトリリースに設定するか否か
 
 GeoIPの自動更新設定
 
+### `postfix_cfg`
+
+Postfixの設定
+
 ### `fail2ban_cfg`
 
 fail2banの追加設定
@@ -85,10 +89,6 @@ syslogの追加設定
 ### `auto_update_cfg`
 
 パッケージの自動更新(cron-apt)のカスタム設定
-
-### `common_postfix_settings`
-
-Postfixの設定
 
 ### `common_swapfile_path`
 

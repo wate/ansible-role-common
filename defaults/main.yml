@@ -214,6 +214,8 @@ postfix_cfg: {}
 #   smtpd_tls_cert_file: /var/lib/dehydrated/certs/{{ inventory_hostname }}/fullchain.pem
 #   smtpd_tls_key_file: /var/lib/dehydrated/certs/{{ inventory_hostname }}/privkey.pem
 #   inet_interfaces: all
+#   anvil_rate_time_unit: 60s
+#   smtpd_client_message_rate_limit: 0
 
 ## ---------
 ## rootアカウントのパスワードロックを行うか否か

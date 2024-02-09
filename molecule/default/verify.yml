@@ -62,6 +62,15 @@
         that:
           - "'adm' in registerd_groups"
     # ファイルのテスト
+    - name: Check skeleton user secret env file
+      ansible.builtin.stat:
+        path: /etc/skel/.secret
+      register: result
+    - name: Assert file
+      ansible.builtin.assert:
+        that:
+          - result.stat.exists
+          - result.stat.mode == '0600'
     - name: Check sshfilter script
       ansible.builtin.stat:
         path: /usr/local/bin/sshfilter

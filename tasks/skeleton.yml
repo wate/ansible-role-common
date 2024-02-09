@@ -1,1 +1,8 @@
 ---
+- name: Create secret env file
+  ansible.builtin.file:
+    path: /etc/skel/.secret
+    mode: "0600"
+    state: touch
+    access_time: preserve
+    modification_time: preserve

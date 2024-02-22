@@ -62,10 +62,6 @@ https://mailfud.org/geoip-legacy/
 
 backportsをデフォルトリリースに設定するか否か
 
-### `common_cron_geoip_update`
-
-GeoIPの自動更新設定
-
 ### `postfix_cfg`
 
 Postfixの設定

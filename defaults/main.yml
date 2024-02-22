@@ -158,6 +158,7 @@ common_ssh_port: 22
 ## SSHのカスタム設定
 ## ---------
 common_sshd_custom_cfg: |
+  #PermitRootLogin prohibit-password
   PubkeyAuthentication yes
   #PasswordAuthentication no
   #Port 2222
@@ -197,13 +198,6 @@ common_geoip_update_files:
 ## backportsをデフォルトリリースに設定するか否か
 ## ---------
 common_apt_default_release_backports: true
-
-## ---------
-## GeoIPの自動更新設定
-## ---------
-common_cron_geoip_update:
-  hour: 4
-  minute: 0
 
 ## ---------
 ## Postfixの設定

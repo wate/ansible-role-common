@@ -10,7 +10,7 @@
     mode: "0644"
   notify: restart fail2ban
 - name: Ensure fail2ban is active and enabled on system startup
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: fail2ban
     state: started
     enabled: true

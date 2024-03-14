@@ -24,7 +24,7 @@
     mode: "0644"
   notify: restart glances
 - name: Set glances service setting
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: glances
     state: "{{ glances_service_setting.running | ternary('started', 'stopped') }}"
     enabled: "{{ glances_service_setting.enabled }}"

@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: ufw
 - name: Ensure ufw is active and enabled on system startup
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: ufw
     state: started
     enabled: true

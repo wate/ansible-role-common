@@ -116,18 +116,6 @@ cronの設定
 
 マウントの設定
 
-### `backup_script_dir`
-
-バックアップスクリプト保存先ディレクトリ
-
-### `backup_dir`
-
-バックアップデータ保存先ディレクトリ
-
-### `backup_settings`
-
-バックアップの設定
-
 ### `glances_additional_packages`
 
 glances用の追加インストールパッケージ

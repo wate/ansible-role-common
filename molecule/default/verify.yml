@@ -33,7 +33,7 @@
         cmd: |
           set -euxo pipefail
           cat /etc/shadow | jc --shadow
-        executable: /usr/bin/bash
+        executable: /usr/bash
       changed_when: false
       register: user_result
     - name: Set user variable
@@ -51,7 +51,7 @@
         cmd: |
           set -euxo pipefail
           cat /etc/group | jc --group
-        executable: /usr/bin/bash
+        executable: /usr/bash
       changed_when: false
       register: group_result
     - name: Set group variable

@@ -105,11 +105,6 @@
     file: mount.yml
   tags:
     - role_common_mount
-- name: Import manage backup setting task
-  ansible.builtin.import_tasks:
-    file: backup.yml
-  tags:
-    - role_common_backup
 - name: Import glances task
   ansible.builtin.import_tasks:
     file: glances.yml

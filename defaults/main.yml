@@ -376,68 +376,6 @@ common_mounts: []
 #     dest: /home/user/.rclone.conf
 
 ## ---------
-## バックアップスクリプト保存先ディレクトリ
-## ---------
-backup_script_dir: /backup/scripts
-
-## ---------
-## バックアップデータ保存先ディレクトリ
-## ---------
-backup_dir: /backup/data
-
-## ---------
-## バックアップの設定
-## ---------
-backup_settings: []
-# ## バックアップコマンド
-# - name: mariadb backup setting
-#   command: mariadb-backup --backup -u root -p{{ mariadb_root_password | default('') }} --target-dir {{ backup_dir }}/mariadb
-#   ## バックアップ実行日時(時)
-#   hour: 3
-#   ## バックアップ実行日時(分)
-#   minute: 20
-# ## バックアップ実行日時(日)
-# # day: "*"
-# ## バックアップ実行日時(月)
-# # month: "*"
-# ## バックアップ実行日時(曜日)
-# # weekday: "*"
-# ## バックアップ設定の存在の有無(true:設定が存在しない場合は登録/false:設定が存在する場合は削除)
-# # state: true
-# ## 実行ユーザー
-# # user: root
-# ## バックアップ設定は残したまま無効化するか否か
-# # disabled: true
-# - name: backup setting with upload backup script file
-#   command: "{{ backup_script_dir }}/script_file"
-#   ## アップロードするファイル
-#   file: /path/to/script_file
-#   ## アップロード後のファイル名
-#   script_name: script_file
-#   hour: 2
-#   minute: 34
-# - name: backup setting with upload backup script template
-#   command: "{{ backup_script_dir }}/script_file"
-#   ## アップロードするファイルのテンプレートファイル
-#   template: /path/to/script_file.j2
-#   ## アップロード後のファイル名
-#   script_name: script_file
-#   hour: 2
-#   minute: 34
-# - name: backup setting with download backup script
-#   command: "{{ backup_script_dir }}/backup.sh"
-#   ## ダウンロールするファイル
-#   url: http://example.com/sucripts/backup.sh
-#   ## バックアップスクリプトのチェックサム
-#   # checksome: 6e642bb8dd5c2e027bf21dd923337cbb4214f827
-#   ## Basic認証(ユーザー名)
-#   # auth_basic_user: user
-#   ## Basic認証(パスワード)
-#   # auth_basic_password: common_requre_sudo_password
-#   hour: 3
-#   minute: 45
-
-## ---------
 ## glances用の追加インストールパッケージ
 ## ---------
 glances_additional_packages: []

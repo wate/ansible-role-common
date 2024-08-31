@@ -457,10 +457,7 @@ common_install_utilities:
   - strace
   - jc
   - silversearcher-ag
-  - exa
-  - bat
   - vnstati
-  - s3fs
   - rclone
   - restic
 

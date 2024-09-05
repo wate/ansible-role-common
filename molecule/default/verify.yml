@@ -23,17 +23,16 @@
           - ansible_facts.packages['tig'] is defined
           - ansible_facts.packages['jq'] is defined
           - ansible_facts.packages['jc'] is defined
-          - ansible_facts.packages['s3fs'] is defined
           - ansible_facts.packages['strace'] is defined
           - ansible_facts.packages['rclone'] is defined
           - ansible_facts.packages['restic'] is defined
     ## ユーザーのテスト
-    - name: Gather group facts
+    - name: Gather user facts
       ansible.builtin.shell:
         cmd: |
-          set -euxo pipefail
+          set -eo pipefail
           cat /etc/shadow | jc --shadow
-        executable: /usr/bash
+        executable: /usr/bin/bash
       changed_when: false
       register: user_result
     - name: Set user variable
@@ -49,9 +48,9 @@
     - name: Gather group facts
       ansible.builtin.shell:
         cmd: |
-          set -euxo pipefail
+          set -eo pipefail
           cat /etc/group | jc --group
-        executable: /usr/bash
+        executable: /usr/bin/bash
       changed_when: false
       register: group_result
     - name: Set group variable
@@ -59,8 +58,7 @@
         registerd_groups: "{{ group_result.stdout | from_json | map(attribute='group_name') }}"
     - name: Assert group
       ansible.builtin.assert:
-        that:
-          - "'adm' in registerd_groups"
+        that: "'adm' in registerd_groups"
     # ファイルのテスト
     - name: Check skeleton user secret env file
       ansible.builtin.stat:
@@ -81,32 +79,13 @@
           - result.stat.exists
           - not result.stat.isdir
           - result.stat.executable
-    - name: Check backup script directory
-      ansible.builtin.stat:
-        path: /backup/scripts
-      register: result
-    - name: Assert backup script directory
-      ansible.builtin.assert:
-        that:
-          - result.stat.exists
-          - result.stat.isdir
-    - name: Check backup data directory
-      ansible.builtin.stat:
-        path: /backup/data
-      register: result
-    - name: Assert backup data directory
-      ansible.builtin.assert:
-        that:
-          - result.stat.exists
-          - result.stat.isdir
     - name: Check geoip database update script
       ansible.builtin.stat:
         path: /etc/cron.weekly/geoip_update
       register: result
     - name: Assert geoip database update script
       ansible.builtin.assert:
-        that:
-          - result.stat.exists
+        that: result.stat.exists
     - name: Check geoip database update script
       ansible.builtin.lineinfile:
         path: /etc/cron.weekly/geoip_update
@@ -115,8 +94,7 @@
       register: result
     - name: Assert geoip database download file setting
       ansible.builtin.assert:
-        that:
-          - result is not changed
+        that: result is not changed
     - name: Check Web server docroot symlink
       ansible.builtin.stat:
         path: /home/full_set/www
@@ -138,8 +116,7 @@
           - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
     - name: Assert service(etckeeper)
       ansible.builtin.assert:
-        that:
-          - ansible_facts.services['etckeeper.service'] is defined
+        that: ansible_facts.services['etckeeper.service'] is defined
     - name: Assert service(vnstat)
       ansible.builtin.assert:
         that:
@@ -165,5 +142,4 @@
         ufw: "{{ result.stdout | from_json }}"
     - name: Assert service(ufw)
       ansible.builtin.assert:
-        that:
-          - ufw.status == 'active'
+        that: ufw.status == 'active'

@@ -141,6 +141,14 @@ glancesのサービス設定
 
 glancesサービスのために開放するポート
 
+### `banner_text`
+
+ログインバナーに表示するテキスト
+
+### `banner_options`
+
+ログインバナー生成時のオプション
+
 ### `common_install_utilities`
 
 インストールするユーティリティパッケージ

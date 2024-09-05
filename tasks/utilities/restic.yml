@@ -1,9 +1,9 @@
 ---
-- name: Install rclone
+- name: Install restic
   ansible.builtin.apt:
-    name: rclone
+    name: restic
 - name: Execute self update
   ansible.builtin.command:
-    cmd: rclone selfupdate
-    removes: /usr/bin/rclone
+    cmd: restic self-update
+    removes: /usr/bin/restic
   changed_when: false

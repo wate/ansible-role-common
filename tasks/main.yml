@@ -2,16 +2,14 @@
 - name: Import repository task
   ansible.builtin.import_tasks:
     file: repository.yml
-  tags:
-    - role_common_repository
+  tags: role_common_repository
 - name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
 - name: Import sudo task
   ansible.builtin.import_tasks:
     file: sudo.yml
-  tags:
-    - role_common_sudo
+  tags: role_common_sudo
 - name: Import hostname task
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
@@ -29,18 +27,15 @@
 - name: Manage user skeleton directory
   ansible.builtin.import_tasks:
     file: skeleton.yml
-  tags:
-    - role_common_skeleton
+  tags: role_common_skeleton
 - name: Import user task
   ansible.builtin.import_tasks:
     file: user.yml
-  tags:
-    - role_common_user
+  tags: role_common_user
 - name: Import disk task
   ansible.builtin.import_tasks:
     file: disk.yml
-  tags:
-    - role_common_disk
+  tags: role_common_disk
 - name: Import firewall task
   ansible.builtin.import_tasks:
     file: firewall.yml
@@ -48,70 +43,60 @@
 - name: Import japanese environment task
   ansible.builtin.import_tasks:
     file: japanese.yml
-  tags:
-    - role_common_japanese
+  tags: role_common_japanese
 - name: Import etckeeper task
   ansible.builtin.import_tasks:
     file: etckeeper.yml
-  tags:
-    - role_common_etckeeper
+  tags: role_common_etckeeper
 - name: Import package auto update task
   ansible.builtin.import_tasks:
     file: auto_update.yml
-  tags:
-    - role_common_auto_update
+  tags: role_common_auto_update
 - name: Manage files
   ansible.builtin.import_tasks:
     file: files.yml
-  tags:
-    - role_common_file
+  tags: role_common_file
 - name: Import manage cron task
   ansible.builtin.import_tasks:
     file: cron.yml
-  tags:
-    - role_common_cron
+  tags: role_common_cron
 - name: Import manage log task
   ansible.builtin.import_tasks:
     file: log.yml
-  tags:
-    - role_common_log
+  tags: role_common_log
 - name: Import setup sshd task
   ansible.builtin.import_tasks:
     file: sshd.yml
-  tags:
-    - role_common_sshd
+  tags: role_common_sshd
 - name: Import setup ssh task
   ansible.builtin.import_tasks:
     file: ssh.yml
-  tags:
-    - role_common_ssh
+  tags: role_common_ssh
 - name: Setup fail2ban
   ansible.builtin.import_tasks:
     file: fail2ban.yml
-  tags:
-    - role_common_fail2ban
+  tags: role_common_fail2ban
 - name: Setup Postfix
   ansible.builtin.import_tasks:
     file: postfix.yml
-  tags:
-    - role_common_postfix
+  tags: role_common_postfix
 - name: Import setup swap task
   ansible.builtin.import_tasks:
     file: swap.yml
-  tags:
-    - role_common_swap
+  tags: role_common_swap
 - name: Import manage mount task
   ansible.builtin.import_tasks:
     file: mount.yml
-  tags:
-    - role_common_mount
+  tags: role_common_mount
 - name: Import glances task
   ansible.builtin.import_tasks:
     file: glances.yml
-  tags:
-    - role_common_glances
+  tags: role_common_glances
 - name: Import utilities task
   ansible.builtin.import_tasks:
     file: utilities.yml
-  tags:
-    - role_common_utilities
+  tags: role_common_utilities
+- name: Import banner task
+  ansible.builtin.import_tasks:
+    file: banner.yml
+  tags: role_common_banner

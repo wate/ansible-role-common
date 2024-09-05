@@ -449,6 +449,18 @@ glances_allow_ports: []
 #   - 61208
 
 ## ---------
+## ログインバナーに表示するテキスト
+## ---------
+banner_text: "{{ inventory_hostname }}"
+
+## ---------
+## ログインバナー生成時のオプション
+## ---------
+banner_options:
+  - -w 200
+  - -f slant
+
+## ---------
 ## インストールするユーティリティパッケージ
 ## ---------
 common_install_utilities:

@@ -1,0 +1,20 @@
+---
+- name: Install figlet and toilet
+  ansible.builtin.apt:
+    name:
+      - figlet
+      - toilet
+      - toilet-fonts
+- name: Set banner text
+  when: banner_text | length > 0
+  block:
+    - name: Generate banner text
+      ansible.builtin.command:
+        cmd: toilet {{ banner_options | default([]) | join(' ') }} "{{ banner_text }}"
+      register: generate_banner_result
+      changed_when: false
+    - name: Set login banner
+      ansible.builtin.template:
+        src: banner/motd.j2
+        dest: /etc/motd
+        mode: "0644"

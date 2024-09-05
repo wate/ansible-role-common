@@ -23,5 +23,4 @@
         listen_udp_posts: "{{ ansible_facts.udp_listen | map(attribute='port') | unique | list }}"
     - name: Assert listen port
       ansible.builtin.assert:
-        that:
-          - 61209 in listen_tcp_posts
+        that: 61209 in listen_tcp_posts

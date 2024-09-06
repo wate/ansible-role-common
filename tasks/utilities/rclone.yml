@@ -1,7 +1,21 @@
 ---
+- name: Find platform task file
+  ansible.builtin.set_fact:
+    include_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}/{{ ansible_facts.distribution_major_version }}.yml"
+        - "{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}.yml"
+        - "{{ ansible_facts.os_family }}.yml"
+      paths:
+        - tasks/utilities/rclone
+- name: Debug
+  ansible.builtin.debug:
+    var: include_task_file
 - name: Install rclone
-  ansible.builtin.apt:
-    name: rclone
+  ansible.builtin.include_tasks: "{{ include_task_file }}"
+  when: include_task_file | length > 0
 - name: Execute self update
   ansible.builtin.command:
     cmd: rclone selfupdate

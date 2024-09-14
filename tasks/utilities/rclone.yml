@@ -10,9 +10,6 @@
         - "{{ ansible_facts.os_family }}.yml"
       paths:
         - tasks/utilities/rclone
-- name: Debug
-  ansible.builtin.debug:
-    var: include_task_file
 - name: Install rclone
   ansible.builtin.include_tasks: "{{ include_task_file }}"
   when: include_task_file | length > 0

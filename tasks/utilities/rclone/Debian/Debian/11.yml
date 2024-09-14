@@ -1,0 +1,30 @@
+---
+- name: Set Github API request header
+  ansible.builtin.set_fact:
+    github_api_request_headers:
+      Accept: application/vnd.github+json
+- name: Merge Github API Authorization request header
+  ansible.builtin.set_fact:
+    github_api_request_headers: "{{ github_api_request_headers | combine(merge_reauest_header) }}"
+  vars:
+    merge_reauest_header:
+      Authorization: Bearer {{ lookup('env', 'GITHUB_TOKEN') }}
+  when: lookup('env', 'GITHUB_TOKEN') | length > 0
+- name: Get jc latest release
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/rclone/rclone/releases/latest
+    headers: "{{ github_api_request_headers }}"
+  register: latest_releases
+- name: Set version variable
+  ansible.builtin.set_fact:
+    rclone_version: "{{ latest_releases.json.tag_name }}"
+- name: Set package file variable
+  ansible.builtin.set_fact:
+    package_file: rclone-{{ rclone_version }}-{{ ansible_facts['system'] | lower }}-{{ arch_type_maps[ansible_facts['architecture']] }}.deb
+  vars:
+    arch_type_maps:
+      x86_64: amd64
+      aarch64: arm64
+- name: Install rclone
+  ansible.builtin.apt:
+    deb: https://github.com/rclone/rclone/releases/download/{{ rclone_version }}/{{ package_file }}

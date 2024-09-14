@@ -458,7 +458,7 @@ banner_text: "{{ inventory_hostname }}"
 ## ---------
 banner_options:
   - -w 200
-  - -f slant
+  - -f standard
 
 ## ---------
 ## インストールするユーティリティパッケージ

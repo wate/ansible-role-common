@@ -5,16 +5,20 @@
       - figlet
       - toilet
       - toilet-fonts
-- name: Set banner text
-  when: banner_text | length > 0
-  block:
-    - name: Generate banner text
-      ansible.builtin.command:
-        cmd: toilet {{ banner_options | default([]) | join(' ') }} "{{ banner_text }}"
-      register: generate_banner_result
-      changed_when: false
-    - name: Set login banner
-      ansible.builtin.template:
-        src: banner/motd.j2
-        dest: /etc/motd
-        mode: "0644"
+- name: Generate banner logo text
+  ansible.builtin.command:
+    cmd: toilet {{ banner_options | default([]) | join(' ') }} "{{ banner_logo_text }}"
+  register: generate_banner_result
+  changed_when: false
+- name: Set login banner text variable
+  ansible.builtin.set_fact:
+    login_banner_text: "{{ generate_banner_result.stdout }}"
+- name: Append login banner text variable
+  ansible.builtin.set_fact:
+    login_banner_text: "{{ login_banner_text }}\n\n{{ banner_additional_text }}"
+  when: banner_additional_text | length > 0
+- name: Set login banner
+  ansible.builtin.template:
+    src: banner/motd.j2
+    dest: /etc/motd
+    mode: "0644"

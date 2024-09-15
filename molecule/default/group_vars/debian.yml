@@ -120,3 +120,10 @@ common_postfix_settings:
     value: "{{ inventory_hostname }}"
   - key: mydestination
     value: "{{ ['$myhostname', 'localdomain', 'localhost', 'localhost.localdomain', 'localhost'] | join(', ') }}"
+
+banner_additional_text: |
+  Repository:
+  https://github.com/redmine/redmine
+
+  Redmine:
+  https://www.redmine.org/

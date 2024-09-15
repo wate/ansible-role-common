@@ -449,16 +449,28 @@ glances_allow_ports: []
 #   - 61208
 
 ## ---------
-## ログインバナーに表示するテキスト
+## ログインバナーに表示するロゴのテキスト
 ## ---------
-banner_text: "{{ inventory_hostname }}"
+banner_logo_text: "{{ inventory_hostname }}"
 
 ## ---------
-## ログインバナー生成時のオプション
+## ログインバナーに表示する追加テキスト
+## ---------
+banner_additional_text: ""
+# banner_additional_text: |
+#   Repository:
+#   https://github.com/redmine/redmine
+#
+#   Redmine:
+#   https://www.redmine.org/
+
+## ---------
+## ログインバナーのログ生成時のオプション
+## (※toiletのコマンドラインオプションを指定)
 ## ---------
 banner_options:
+  - -f slant
   - -w 200
-  - -f standard
 
 ## ---------
 ## インストールするユーティリティパッケージ

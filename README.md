@@ -141,13 +141,18 @@ glancesのサービス設定
 
 glancesサービスのために開放するポート
 
-### `banner_text`
+### `banner_logo_text`
 
-ログインバナーに表示するテキスト
+ログインバナーに表示するロゴのテキスト
+
+### `banner_additional_text`
+
+ログインバナーに表示する追加テキスト
 
 ### `banner_options`
 
-ログインバナー生成時のオプション
+ログインバナーのログ生成時のオプション  
+(※toiletのコマンドラインオプションを指定)
 
 ### `common_install_utilities`
 

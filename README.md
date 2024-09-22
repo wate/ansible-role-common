@@ -14,7 +14,7 @@ OS Platform
 Role Variables
 --------------
 
-### `defaults/main.yml`
+### [defaults/main.yml](defaults/main.yml)
 
 設定方法の詳細については[defaults/main.yml](defaults/main.yml)のサンプルコードなどを参照してください。
 

@@ -10,7 +10,7 @@
   ansible.builtin.import_tasks:
     file: sudo.yml
   tags: role_common_sudo
-- name: Import hostname task
+- name: Set hostname
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   tags:

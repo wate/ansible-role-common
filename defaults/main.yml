@@ -21,8 +21,10 @@ common_packages:
   - git
   - man-db
   - sysstat
-  - diffstat
+  - dstat
   - vnstat
+  - diffstat
+  - iotop
   - m4
   - libtool
   - gcc
@@ -33,6 +35,8 @@ common_packages:
   - pkg-config
   - imagemagick
   - postfix
+  - python3-apt
+  - python3-debian
   - ca-certificates
   - software-properties-common
 

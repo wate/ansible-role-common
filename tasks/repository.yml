@@ -1,9 +1,20 @@
 ---
+- name: Install dependency packages
+  ansible.builtin.apt:
+    name: python3-debian
 - name: Add backports repository
-  ansible.builtin.apt_repository:
-    filename: backports
-    repo: deb http://deb.debian.org/debian {{ ansible_facts.distribution_release }}-backports main
+  ansible.builtin.deb822_repository:
+    name: backports
+    uris: http://deb.debian.org/debian
+    suites: "{{ ansible_facts.distribution_release }}-backports"
+    components: main
+    enabled: true
     state: present
+  register: apt_repository_result
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: apt_repository_result is changed
 - name: Change apt default release
   ansible.builtin.template:
     src: repository/99default_release.j2

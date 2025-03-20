@@ -9,12 +9,15 @@ common_files:
   - dest: /usr/local/bin/remove_file
     removed: true
 
+common_groups:
+  - name: app
+
 common_users:
   - name: simple
-    password: "{{ 'password' | password_hash('sha512') }}"
-  - name: disable_acount
+    password: "{{ 'simple' | password_hash }}"
+  - name: disable_account
   - name: full_set
-    password: "{{ 'password' | password_hash('sha512') }}"
+    password: "{{ 'full_set' | password_hash }}"
     authorized_keys:
       - key: https://github.com/wate.keys
       - key: https://github.com/nogajun.keys
@@ -86,13 +89,23 @@ common_users:
       - name: SOME_NAME
         value: SOME_VALUE
         removed: true
-  - name: pass_lock
+  - name: admin_user
+    password: "{{ 'admin_user' | password_hash }}"
+    admin: true
+  - name: not_admin_user
+    password: "{{ 'not_admin_user' | password_hash }}"
+    admin: false
+  - name: locked_user
+    password_lock: true
+  - name: locked_admin_user
+    password: "{{ 'locked_admin_user' | password_hash }}"
+    admin: true
     password_lock: true
   - name: update_pass_on_create
-    password: "{{ 'password2' | password_hash('sha512') }}"
+    password: "{{ 'update_pass_on_create' | password_hash }}"
     update_password: on_create
   - name: update_pass_always
-    password: "{{ 'password3' | password_hash('sha512') }}"
+    password: "{{ 'update_pass_always' | password_hash }}"
     update_password: always
 
 common_geoip_update_files:

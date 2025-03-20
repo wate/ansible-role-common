@@ -61,16 +61,18 @@ common_users: []
 #     # ------
 #     # Optional
 #     # ------
-#     # ※パスワードの設定を省略した場合ロックされた状態でユーザーが追加されます
-#     password: "{{ 'password' | password_hash('sha512') }}"
-#     groups:
-#       - group1
-#       - group2
+#     # ※パスワードの設定を省略した場合、ロックされた状態でユーザーが追加されます
+#     password: "{{ 'password' | password_hash }}"
 #     authorized_keys:
 #       - key: https://github.com/wate.keys
 #       - key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 #         removed: true
-#     shell: /bin/nologin
+#     ## サーバー管理者権限を付与するか否か
+#     admin: true
+#     groups:
+#       - group1
+#       - group2
+#     shell: /usr/bin/bash
 #     directories:
 #       - name: bin
 #         mode: "0700"

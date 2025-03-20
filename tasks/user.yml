@@ -27,13 +27,13 @@
     label: "{{ item.name }}"
 - name: Filter removed users
   ansible.builtin.set_fact:
-    existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
+    exists_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
 - name: Set authorized keys
   ansible.posix.authorized_key:
     user: "{{ item.0.name }}"
     key: "{{ item.1.key }}"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
-  loop: "{{ existing_users | subelements('authorized_keys', skip_missing=True) }}"
+  loop: "{{ exists_users | subelements('authorized_keys', skip_missing=True) }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1 }}"
 - name: Create ~/.ssh directory
@@ -41,7 +41,7 @@
     path: ~/.ssh
     state: directory
     mode: "0700"
-  loop: "{{ existing_users | selectattr('ssh_config', 'defined') | list }}"
+  loop: "{{ exists_users | selectattr('ssh_config', 'defined') | list }}"
   loop_control:
     label: "{{ item.name }}"
   become: true
@@ -56,7 +56,7 @@
       {% endfor -%}
     mode: "0600"
     create: true
-  loop: "{{ existing_users | selectattr('ssh_config', 'defined') | list }}"
+  loop: "{{ exists_users | selectattr('ssh_config', 'defined') | list }}"
   loop_control:
     label: "{{ item.name }}"
   become: true
@@ -66,7 +66,7 @@
     dest: ~/.ssh/{{ item.1.name }}
     src: "{{ item.1.src }}"
     mode: "0600"
-  loop: "{{ existing_users | subelements('upload_private_keys', skip_missing=True) }}"
+  loop: "{{ exists_users | subelements('upload_private_keys', skip_missing=True) }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
   become: true
@@ -79,7 +79,7 @@
       if [ -f "$HOME/.secret" ]; then
         . "$HOME/.secret"
       fi
-  loop: "{{ existing_users }}"
+  loop: "{{ exists_users }}"
   loop_control:
     label: "{{ item.name }}"
   become: true
@@ -92,18 +92,32 @@
     create: true
     mode: "0600"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
-  loop: "{{ existing_users | subelements('secret_vars', skip_missing=True) | list }}"
+  loop: "{{ exists_users | subelements('secret_vars', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
   become: true
   become_user: "{{ item.0.name }}"
   tags: secret
-- name: Add admin group for admin users
-  ansible.builtin.user:
-    name: "{{ item.name }}"
-    groups: "{{ admin_group_name }}"
-    append: true
-  loop: "{{ existing_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', true) | list }}"
+- name: Retrieve users belonging to the admin group
+  ansible.builtin.command:
+    cmd: getent group {{ admin_group_name }}
+  changed_when: false
+  register: getent_group_result
+- name: Assign the list of users belonging to the administrator group to the variable
+  ansible.builtin.set_fact:
+    server_admin_users: "{{ getent_group_result.stdout.split(':')[-1].split(',') }}"
+- name: Grant administrative privileges
+  ansible.builtin.command:
+    cmd: gpasswd -a {{ item.name }} {{ admin_group_name }}
+  when: item.name not in server_admin_users
+  loop: "{{ exists_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+- name: Revocation of administrative privileges
+  ansible.builtin.command:
+    cmd: gpasswd -d {{ item.name }} {{ admin_group_name }}
+  when: item.name in server_admin_users
+  loop: "{{ exists_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', false) | list }}"
   loop_control:
     label: "{{ item.name }}"
 - name: Create user directories
@@ -114,7 +128,7 @@
     mode: "{{ item.1.mode | default(omit) }}"
   become: true
   become_user: "{{ item.0.name }}"
-  loop: "{{ existing_users | subelements('directories', skip_missing=True) | list }}"
+  loop: "{{ exists_users | subelements('directories', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: Manage cron job variavle
@@ -123,7 +137,7 @@
     name: "{{ item.1.name }}"
     value: "{{ omit if item.1.removed | default(false) else item.1.value | default('') }}"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
-  loop: "{{ existing_users | subelements('cron_vars', skip_missing=True) | list }}"
+  loop: "{{ exists_users | subelements('cron_vars', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: Manage cron jobs
@@ -138,7 +152,7 @@
     weekday: "{{ item.1.weekday | default('*') | string }}"
     disabled: "{{ item.1.disable | default(false) }}"
     state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
-  loop: "{{ existing_users | subelements('cron_jobs', skip_missing=True) | list }}"
+  loop: "{{ exists_users | subelements('cron_jobs', skip_missing=True) | list }}"
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: Set root account lock status

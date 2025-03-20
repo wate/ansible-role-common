@@ -9,24 +9,6 @@
         manager: auto
     - name: Populate service facts
       ansible.builtin.service_facts:
-    ## パッケージのテスト
-    - name: Assert package
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.packages['etckeeper'] is defined
-          - ansible_facts.packages['ufw'] is defined
-          - ansible_facts.packages['fail2ban'] is defined
-          - ansible_facts.packages['glances'] is defined
-    - name: Assert utility package
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.packages['tig'] is defined
-          - ansible_facts.packages['jq'] is defined
-          - ansible_facts.packages['jc'] is defined
-          - ansible_facts.packages['strace'] is defined
-          - ansible_facts.packages['rclone'] is defined
-          - ansible_facts.packages['restic'] is defined
-    ## ユーザーのテスト
     - name: Gather user facts
       ansible.builtin.shell:
         cmd: |
@@ -35,16 +17,9 @@
         executable: /usr/bin/bash
       changed_when: false
       register: user_result
-    - name: Set user variable
+    - name: Set registered_users variable
       ansible.builtin.set_fact:
-        registerd_users: "{{ user_result.stdout | from_json | map(attribute='username') }}"
-    - name: Assert user
-      ansible.builtin.assert:
-        that:
-          - "'simple' in registerd_users"
-          - "'disable_acount' in registerd_users"
-          - "'full_set' in registerd_users"
-    ## グループのテスト
+        registered_users: "{{ user_result.stdout | from_json }}"
     - name: Gather group facts
       ansible.builtin.shell:
         cmd: |
@@ -53,93 +28,180 @@
         executable: /usr/bin/bash
       changed_when: false
       register: group_result
-    - name: Set group variable
+    - name: Set registered_groups variable
       ansible.builtin.set_fact:
-        registerd_groups: "{{ group_result.stdout | from_json | map(attribute='group_name') }}"
-    - name: Assert group
-      ansible.builtin.assert:
-        that: "'adm' in registerd_groups"
+        registered_groups: "{{ group_result.stdout | from_json }}"
+    ## パッケージのテスト
+    - name: Test  package
+      block:
+        - name: Assert package
+          ansible.builtin.assert:
+            that:
+              - ansible_facts.packages['etckeeper'] is defined
+              - ansible_facts.packages['ufw'] is defined
+              - ansible_facts.packages['fail2ban'] is defined
+              - ansible_facts.packages['glances'] is defined
+        - name: Assert utility package
+          ansible.builtin.assert:
+            that:
+              - ansible_facts.packages['tig'] is defined
+              - ansible_facts.packages['jq'] is defined
+              - ansible_facts.packages['jc'] is defined
+              - ansible_facts.packages['strace'] is defined
+              - ansible_facts.packages['rclone'] is defined
+              - ansible_facts.packages['restic'] is defined
+    ## ユーザーのテスト
+    - name: Test user
+      block:
+        - name: Set registered_user_names variable
+          ansible.builtin.set_fact:
+            registered_user_names: "{{ registered_users | map(attribute='username') | list }}"
+        - name: Assert user
+          ansible.builtin.assert:
+            that:
+              - "'simple' in registered_user_names"
+              - "'disable_account' in registered_user_names"
+              - "'full_set' in registered_user_names"
+              - "'admin_user' in registered_user_names"
+              - "'not_admin_user' in registered_user_names"
+              - "'locked_user' in registered_user_names"
+              - "'locked_admin_user' in registered_user_names"
+              - "'update_pass_on_create' in registered_user_names"
+              - "'update_pass_always' in registered_user_names"
+    ## グループのテスト
+    - name: Test group
+      block:
+        - name: Set registered_group_names variable
+          ansible.builtin.set_fact:
+            registered_group_names: "{{ registered_groups | map(attribute='group_name') | list }}"
+        - name: Assert group
+          ansible.builtin.assert:
+            that:
+              - "'app' in registered_group_names"
+              - "'adm' in registered_group_names"
+    ## アカウントロックのテスト
+    - name: Test lock user
+      block:
+        - name: Set locked_user_names variable
+          ansible.builtin.set_fact:
+            locked_user_names: "{{ registered_users | selectattr('password', 'match', '^!') | map(attribute='username') | list }}"
+        - name: Assert lock user
+          ansible.builtin.assert:
+            that:
+              - "'simple' not in locked_user_names"
+              - "'disable_account' in locked_user_names"
+              - "'full_set' not in locked_user_names"
+              - "'admin_user' not in locked_user_names"
+              - "'not_admin_user' not in locked_user_names"
+              - "'locked_user' in locked_user_names"
+              - "'locked_admin_user' in locked_user_names"
+              - "'update_pass_on_create' not in locked_user_names"
+              - "'update_pass_always' not in locked_user_names"
+    ## サーバー管理権限のテスト
+    - name: Test admin user
+      block:
+        - name: Set group_members variable
+          ansible.builtin.set_fact:
+            group_members: "{{ registered_groups | items2dict('group_name', 'members') }}"
+        - name: Assert admin user
+          ansible.builtin.assert:
+            that:
+              - "'simple' not in group_members['adm']"
+              - "'disable_account' not in group_members['adm']"
+              - "'full_set' in group_members['adm']"
+              - "'admin_user' in group_members['adm']"
+              - "'not_admin_user' not in group_members['adm']"
+              - "'locked_user' not in group_members['adm']"
+              - "'locked_admin_user' in group_members['adm']"
+              - "'update_pass_on_create' not in group_members['adm']"
+              - "'update_pass_always' not in group_members['adm']"
     # ファイルのテスト
-    - name: Check skeleton user secret env file
-      ansible.builtin.stat:
-        path: /etc/skel/.secret
-      register: result
-    - name: Assert file
-      ansible.builtin.assert:
-        that:
-          - result.stat.exists
-          - result.stat.mode == '0600'
-    - name: Check sshfilter script
-      ansible.builtin.stat:
-        path: /usr/local/bin/sshfilter
-      register: result
-    - name: Assert file
-      ansible.builtin.assert:
-        that:
-          - result.stat.exists
-          - not result.stat.isdir
-          - result.stat.executable
-    - name: Check geoip database update script
-      ansible.builtin.stat:
-        path: /etc/cron.weekly/geoip_update
-      register: result
-    - name: Assert geoip database update script
-      ansible.builtin.assert:
-        that: result.stat.exists
-    - name: Check geoip database update script
-      ansible.builtin.lineinfile:
-        path: /etc/cron.weekly/geoip_update
-        line: FILES="GeoIP GeoIPv6 GeoIPCity GeoIPCityv6"
-      check_mode: true
-      register: result
-    - name: Assert geoip database download file setting
-      ansible.builtin.assert:
-        that: result is not changed
-    - name: Check Web server docroot symlink
-      ansible.builtin.stat:
-        path: /home/full_set/www
-      register: result
-    - name: Assert docroot symlink
-      ansible.builtin.assert:
-        that:
-          - result.stat.exists
-          - result.stat.islnk
-          - result.stat.pw_name == 'full_set'
-          - result.stat.gr_name == 'full_set'
-          - result.stat.lnk_source == '/var/www/html'
+    - name: Test file
+      block:
+        - name: Check skeleton user secret env file
+          ansible.builtin.stat:
+            path: /etc/skel/.secret
+          register: skel_result
+        - name: Assert file
+          ansible.builtin.assert:
+            that:
+              - skel_result.stat.exists
+              - skel_result.stat.mode == '0600'
+        - name: Check sshfilter script
+          ansible.builtin.stat:
+            path: /usr/local/bin/sshfilter
+          register: sshfilter_result
+        - name: Assert file
+          ansible.builtin.assert:
+            that:
+              - sshfilter_result.stat.exists
+              - not sshfilter_result.stat.isdir
+              - sshfilter_result.stat.executable
+        - name: Check geoip database update script
+          ansible.builtin.stat:
+            path: /etc/cron.weekly/geoip_update
+          register: geoip_update_script_result
+        - name: Assert geoip database update script
+          ansible.builtin.assert:
+            that:
+              - geoip_update_script_result.stat.exists
+        - name: Check geoip database update script
+          ansible.builtin.lineinfile:
+            path: /etc/cron.weekly/geoip_update
+            line: FILES="GeoIP GeoIPv6 GeoIPCity GeoIPCityv6"
+          check_mode: true
+          register: geoip_update_script_setting_result
+        - name: Assert geoip database download file setting
+          ansible.builtin.assert:
+            that:
+              - geoip_update_script_setting_result is not changed
+        - name: Check Web server docroot symlink
+          ansible.builtin.stat:
+            path: /home/full_set/www
+          register: symlink_result
+        - name: Assert docroot symlink
+          ansible.builtin.assert:
+            that:
+              - symlink_result.stat.exists
+              - symlink_result.stat.islnk
+              - symlink_result.stat.pw_name == 'full_set'
+              - symlink_result.stat.gr_name == 'full_set'
+              - symlink_result.stat.lnk_source == '/var/www/html'
     ## サービスのテスト
-    - name: Assert service(fail2ban)
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.services['fail2ban.service'] is defined
-          - ansible_facts.services['fail2ban.service']['state'] == 'running'
-          - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
-    - name: Assert service(etckeeper)
-      ansible.builtin.assert:
-        that: ansible_facts.services['etckeeper.service'] is defined
-    - name: Assert service(vnstat)
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.services['vnstat.service'] is defined
-          - ansible_facts.services['vnstat.service']['state'] == 'running'
-          - ansible_facts.services['vnstat.service']['status'] == 'enabled'
-    - name: Assert service(glances)
-      ansible.builtin.assert:
-        that:
-          - ansible_facts.services['glances.service'] is defined
-          - ansible_facts.services['glances.service']['state'] == 'inactive'
-          - ansible_facts.services['glances.service']['status'] == 'disabled'
-    - name: Gather ufw status
-      ansible.builtin.shell:
-        cmd: |
-          set -eo pipefail
-          ufw status verbose | jc --ufw
-        executable: /bin/bash
-      changed_when: false
-      register: result
-    - name: Set ufw variable
-      ansible.builtin.set_fact:
-        ufw: "{{ result.stdout | from_json }}"
-    - name: Assert service(ufw)
-      ansible.builtin.assert:
-        that: ufw.status == 'active'
+    - name: Test service
+      block:
+        - name: Assert service(fail2ban)
+          ansible.builtin.assert:
+            that:
+              - ansible_facts.services['fail2ban.service'] is defined
+              - ansible_facts.services['fail2ban.service']['state'] == 'running'
+              - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
+        - name: Assert service(etckeeper)
+          ansible.builtin.assert:
+            that: ansible_facts.services['etckeeper.service'] is defined
+        - name: Assert service(vnstat)
+          ansible.builtin.assert:
+            that:
+              - ansible_facts.services['vnstat.service'] is defined
+              - ansible_facts.services['vnstat.service']['state'] == 'running'
+              - ansible_facts.services['vnstat.service']['status'] == 'enabled'
+        - name: Assert service(glances)
+          ansible.builtin.assert:
+            that:
+              - ansible_facts.services['glances.service'] is defined
+              - ansible_facts.services['glances.service']['state'] == 'inactive'
+              - ansible_facts.services['glances.service']['status'] == 'disabled'
+        - name: Gather ufw status
+          ansible.builtin.shell:
+            cmd: |
+              set -eo pipefail
+              ufw status verbose | jc --ufw
+            executable: /bin/bash
+          changed_when: false
+          register: result
+        - name: Set ufw variable
+          ansible.builtin.set_fact:
+            ufw: "{{ result.stdout | from_json }}"
+        - name: Assert service(ufw)
+          ansible.builtin.assert:
+            that: ufw.status == 'active'

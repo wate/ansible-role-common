@@ -1,9 +1,12 @@
 bitbucket
 diffstat
+direnv
+dotenv
 dstat
 etckeeper
 figlet
 firewalld
+geerlingguy
 geoip
 gitlab
 imagemagick

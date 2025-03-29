@@ -1,8 +1,12 @@
 automount
 bantime
+behaviour
 bizud
+cgroupns
 Cityv
+cpus
 destemail
+envrc
 equalto
 EXITON
 findtime

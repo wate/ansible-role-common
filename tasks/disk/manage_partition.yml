@@ -1,5 +1,5 @@
 ---
-- name: Set temorary variable
+- name: Set temporary variable
   ansible.builtin.set_fact:
     tmp_device_name: "{{ tmp_device.split('/')[-1] }}"
 - name: Manage partition

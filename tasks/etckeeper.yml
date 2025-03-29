@@ -6,10 +6,10 @@
   ansible.builtin.stat:
     path: /etc/.git
   register: result
-- name: Initilize etckeeper
+- name: Initialize etckeeper
   when: not result.stat.exists
   block:
-    - name: Initilize repository
+    - name: Initialize repository
       ansible.builtin.command:
         cmd: etckeeper init
         chdir: /etc

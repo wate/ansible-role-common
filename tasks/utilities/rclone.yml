@@ -15,6 +15,6 @@
   when: include_task_file | length > 0
 - name: Execute self update
   ansible.builtin.command:
-    cmd: rclone self-update
+    cmd: rclone selfupdate
     removes: /usr/bin/rclone
   changed_when: false

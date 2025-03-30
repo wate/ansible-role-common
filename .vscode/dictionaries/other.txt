@@ -28,6 +28,7 @@ myhostname
 Numv
 passno
 privkey
+selfupdate
 skel
 smtpd
 sshfilter

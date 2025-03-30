@@ -360,7 +360,7 @@ common_mounts: []
 #   mount_options:
 #     - defaults
 # ## オブジェクトストレージのマウント
-# - path: /object_strage
+# - path: /object_storage
 #   required_packages:
 #     - rclone
 #   src: remote:/path/to/remote/folder

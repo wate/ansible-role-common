@@ -6,7 +6,7 @@
     value: "{{ item.value if item.removed | default(false) else omit }}"
     state: "{{ tem.removed | default(false) | ternary('absent', 'present') }}"
   loop: "{{ common_cron_vars }}"
-- name: manage cron jobs
+- name: Manage cron jobs
   ansible.builtin.cron:
     name: "{{ item.name }}"
     job: "{{ item.job }}"

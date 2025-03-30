@@ -24,7 +24,7 @@
             group: root
             mode: "0600"
             state: touch
-        - name: Initilize swapfile
+        - name: Initialize swapfile
           ansible.builtin.command:
             cmd: dd if=/dev/zero of={{ common_swapfile_path }} bs=1M count={{ common_swap_size | int * 1024 }}
             removes: "{{ common_swapfile_path }}"

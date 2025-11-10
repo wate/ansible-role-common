@@ -484,6 +484,7 @@ banner_options:
 common_install_utilities:
   - tig
   - jq
+  - yq
   - strace
   - jc
   - silversearcher-ag

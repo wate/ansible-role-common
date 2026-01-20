@@ -26,6 +26,6 @@
   changed_when: false
 - name: Set locale
   ansible.builtin.command:
-    cmd: localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+    cmd: localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE=ja_JP.UTF-8
   changed_when: true
   when: "'LANG=ja_JP.UTF-8' not in result.stdout"

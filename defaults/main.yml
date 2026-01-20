@@ -38,7 +38,6 @@ common_packages:
   - python3-apt
   - python3-debian
   - ca-certificates
-  - software-properties-common
 
 ## ---------
 ## グループの設定
@@ -484,6 +483,7 @@ banner_options:
 common_install_utilities:
   - tig
   - jq
+  - yq
   - strace
   - jc
   - silversearcher-ag

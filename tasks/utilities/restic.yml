@@ -2,8 +2,3 @@
 - name: Install restic
   ansible.builtin.apt:
     name: restic
-- name: Execute self update
-  ansible.builtin.command:
-    cmd: restic self-update
-    removes: /usr/bin/restic
-  changed_when: false

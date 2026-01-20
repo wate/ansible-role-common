@@ -1,4 +1,0 @@
----
-- name: Install rclone
-  ansible.builtin.apt:
-    name: rclone

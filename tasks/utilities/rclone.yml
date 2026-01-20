@@ -1,20 +1,33 @@
 ---
-- name: Find platform task file
+- name: Get latest release
+  when: rclone_version | default('latest') == 'latest'
+  block:
+    - name: Set Github API request header
+      ansible.builtin.set_fact:
+        github_api_request_headers:
+          Accept: application/vnd.github+json
+    - name: Merge Github API Authorization request header
+      ansible.builtin.set_fact:
+        github_api_request_headers: "{{ github_api_request_headers | combine(merge_request_header) }}"
+      vars:
+        merge_request_header:
+          Authorization: Bearer {{ lookup('env', 'GITHUB_TOKEN') }}
+      when: lookup('env', 'GITHUB_TOKEN') | length > 0
+    - name: Get jc latest release
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/rclone/rclone/releases/latest
+        headers: "{{ github_api_request_headers }}"
+      register: latest_releases
+    - name: Set version variable
+      ansible.builtin.set_fact:
+        rclone_version: "{{ latest_releases.json.tag_name }}"
+- name: Set package file variable
   ansible.builtin.set_fact:
-    include_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
+    package_file: rclone-{{ rclone_version }}-{{ ansible_facts['system'] | lower }}-{{ architecture_files[ansible_facts['architecture']] }}.deb
   vars:
-    params:
-      files:
-        - "{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}/{{ ansible_facts.distribution_major_version }}.yml"
-        - "{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}.yml"
-        - "{{ ansible_facts.os_family }}.yml"
-      paths:
-        - tasks/utilities/rclone
+    architecture_files:
+      x86_64: amd64
+      aarch64: arm64
 - name: Install rclone
-  ansible.builtin.include_tasks: "{{ include_task_file }}"
-  when: include_task_file | length > 0
-- name: Execute self update
-  ansible.builtin.command:
-    cmd: rclone selfupdate
-    removes: /usr/bin/rclone
-  changed_when: false
+  ansible.builtin.apt:
+    deb: https://github.com/rclone/rclone/releases/download/{{ rclone_version }}/{{ package_file }}

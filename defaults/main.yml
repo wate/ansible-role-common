@@ -38,7 +38,6 @@ common_packages:
   - python3-apt
   - python3-debian
   - ca-certificates
-  - software-properties-common
 
 ## ---------
 ## グループの設定

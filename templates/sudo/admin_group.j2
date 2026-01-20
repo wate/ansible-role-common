@@ -1,5 +1,1 @@
-# ------------------------
-# {{ ansible_managed }}
-# ------------------------
-
 %{{ admin_group_name }} ALL=(ALL) {{ '' if admin_group_sudo_require_password else 'NOPASSWD:ALL' }}

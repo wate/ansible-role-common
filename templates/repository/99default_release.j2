@@ -1,2 +1,1 @@
-// {{ ansible_managed }}
 {% if not common_apt_default_release_backports %}// {% endif %}APT::Default-Release "{{ ansible_facts.distribution_release }}-backports";

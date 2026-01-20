@@ -27,6 +27,7 @@
   vars:
     architecture_files:
       x86_64: amd64
+      aarch64: arm64
 - name: Install jc
   ansible.builtin.apt:
     deb: https://github.com/kellyjonbrazil/jc/releases/download/{{ jc_version }}/{{ package_file }}

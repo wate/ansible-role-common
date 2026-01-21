@@ -3,7 +3,7 @@ role_name_check: 1
 dependency:
   name: galaxy
 driver:
-  name: ${DRIVER_NAME:-docker}
+  name: vagrant
 platforms:
   - name: trixie
     groups:
@@ -46,7 +46,6 @@ provisioner:
   config_options:
     defaults:
       hash_behaviour: merge
-      result_format: yaml
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 # verifier:

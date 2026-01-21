@@ -3,7 +3,7 @@ role_name_check: 1
 dependency:
   name: galaxy
 driver:
-  name: ${DRIVER_NAME:-docker}
+  name: vagrant
 platforms:
   - name: trixie
     groups:

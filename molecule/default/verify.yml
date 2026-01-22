@@ -41,6 +41,8 @@
               - ansible_facts.packages['ufw'] is defined
               - ansible_facts.packages['fail2ban'] is defined
               - ansible_facts.packages['glances'] is defined
+            fail_msg: "Some required packages are not installed"
+            success_msg: "All required packages are installed"
         - name: Assert utility package
           ansible.builtin.assert:
             that:
@@ -50,6 +52,8 @@
               - ansible_facts.packages['strace'] is defined
               - ansible_facts.packages['rclone'] is defined
               - ansible_facts.packages['restic'] is defined
+            fail_msg: "Some required utility packages are not installed"
+            success_msg: "All required utility packages are installed"
     ## ユーザーのテスト
     - name: Test user
       block:
@@ -68,6 +72,8 @@
               - "'locked_admin_user' in registered_user_names"
               - "'update_pass_on_create' in registered_user_names"
               - "'update_pass_always' in registered_user_names"
+            fail_msg: "Some required users are not registered"
+            success_msg: "All required users are registered"
     ## グループのテスト
     - name: Test group
       block:
@@ -79,6 +85,8 @@
             that:
               - "'app' in registered_group_names"
               - "'adm' in registered_group_names"
+            fail_msg: "Some required groups are not registered"
+            success_msg: "All required groups are registered"
     ## アカウントロックのテスト
     - name: Test lock user
       block:
@@ -97,6 +105,8 @@
               - "'locked_admin_user' in locked_user_names"
               - "'update_pass_on_create' not in locked_user_names"
               - "'update_pass_always' not in locked_user_names"
+            fail_msg: "User lock status is not properly configured"
+            success_msg: "User lock status is properly configured"
     ## サーバー管理権限のテスト
     - name: Test admin user
       block:
@@ -115,6 +125,8 @@
               - "'locked_admin_user' in group_members['adm']"
               - "'update_pass_on_create' not in group_members['adm']"
               - "'update_pass_always' not in group_members['adm']"
+            fail_msg: "Admin group membership is not properly configured"
+            success_msg: "Admin group membership is properly configured"
     # ファイルのテスト
     - name: Test file
       block:
@@ -127,6 +139,8 @@
             that:
               - skel_result.stat.exists
               - skel_result.stat.mode == '0600'
+            fail_msg: "Skeleton user secret env file is not properly configured"
+            success_msg: "Skeleton user secret env file is properly configured"
         - name: Check sshfilter script
           ansible.builtin.stat:
             path: /usr/local/bin/sshfilter
@@ -137,6 +151,8 @@
               - sshfilter_result.stat.exists
               - not sshfilter_result.stat.isdir
               - sshfilter_result.stat.executable
+            fail_msg: "sshfilter script is not properly installed"
+            success_msg: "sshfilter script is properly installed"
         - name: Check geoip database update script
           ansible.builtin.stat:
             path: /etc/cron.weekly/geoip_update
@@ -145,6 +161,8 @@
           ansible.builtin.assert:
             that:
               - geoip_update_script_result.stat.exists
+            fail_msg: "GeoIP database update script not found"
+            success_msg: "GeoIP database update script exists"
         - name: Check geoip database update script
           ansible.builtin.lineinfile:
             path: /etc/cron.weekly/geoip_update
@@ -155,6 +173,8 @@
           ansible.builtin.assert:
             that:
               - geoip_update_script_setting_result is not changed
+            fail_msg: "GeoIP database download file setting is not properly configured"
+            success_msg: "GeoIP database download file setting is properly configured"
         - name: Check Web server docroot symlink
           ansible.builtin.stat:
             path: /home/full_set/www
@@ -167,6 +187,8 @@
               - symlink_result.stat.pw_name == 'full_set'
               - symlink_result.stat.gr_name == 'full_set'
               - symlink_result.stat.lnk_source == '/var/www/html'
+            fail_msg: "Web server docroot symlink is not properly configured"
+            success_msg: "Web server docroot symlink is properly configured"
     ## サービスのテスト
     - name: Test service
       block:
@@ -176,21 +198,29 @@
               - ansible_facts.services['fail2ban.service'] is defined
               - ansible_facts.services['fail2ban.service']['state'] == 'running'
               - ansible_facts.services['fail2ban.service']['status'] == 'enabled'
+            fail_msg: "fail2ban service is not running or not enabled"
+            success_msg: "fail2ban service is running and enabled"
         - name: Assert service(etckeeper)
           ansible.builtin.assert:
             that: ansible_facts.services['etckeeper.service'] is defined
+            fail_msg: "etckeeper service is not defined"
+            success_msg: "etckeeper service is defined"
         - name: Assert service(vnstat)
           ansible.builtin.assert:
             that:
               - ansible_facts.services['vnstat.service'] is defined
               - ansible_facts.services['vnstat.service']['state'] == 'running'
               - ansible_facts.services['vnstat.service']['status'] == 'enabled'
+            fail_msg: "vnstat service is not running or not enabled"
+            success_msg: "vnstat service is running and enabled"
         - name: Assert service(glances)
           ansible.builtin.assert:
             that:
               - ansible_facts.services['glances.service'] is defined
               - ansible_facts.services['glances.service']['state'] == 'inactive'
               - ansible_facts.services['glances.service']['status'] == 'disabled'
+            fail_msg: "glances service state is not properly configured"
+            success_msg: "glances service state is properly configured"
         - name: Gather ufw status
           ansible.builtin.shell:
             cmd: |
@@ -205,3 +235,5 @@
         - name: Assert service(ufw)
           ansible.builtin.assert:
             that: ufw.status == 'active'
+            fail_msg: "ufw firewall is not active"
+            success_msg: "ufw firewall is active"

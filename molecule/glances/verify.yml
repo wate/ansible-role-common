@@ -4,6 +4,16 @@
   gather_facts: true
   become: true
   tasks:
+    ## パッケージのテスト
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+        manager: auto
+    - name: Assert glances package is installed
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.packages['glances'] is defined
+        fail_msg: "glances package is not installed"
+        success_msg: "glances package is installed"
     ## サービスのテスト
     - name: Populate service facts
       ansible.builtin.service_facts:
@@ -11,8 +21,18 @@
       ansible.builtin.assert:
         that:
           - ansible_facts.services['glances.service'] is defined
+          - ansible_facts.services['glances.service']['state'] == 'running'
+          - ansible_facts.services['glances.service']['status'] == 'enabled'
+        fail_msg: "glances service is not running or not enabled"
+        success_msg: "glances service is running and enabled"
+    - name: Assert service(vnstat)
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['vnstat.service'] is defined
           - ansible_facts.services['vnstat.service']['state'] == 'running'
           - ansible_facts.services['vnstat.service']['status'] == 'enabled'
+        fail_msg: "vnstat service is not running or not enabled"
+        success_msg: "vnstat service is running and enabled"
     ## 待受ポートのテスト
     - name: Gather facts on listening ports
       community.general.listen_ports_facts:
@@ -24,3 +44,22 @@
     - name: Assert listen port
       ansible.builtin.assert:
         that: 61209 in listen_tcp_posts
+        fail_msg: "glances is not listening on port 61209"
+        success_msg: "glances is listening on port 61209"
+    ## ファイアウォールのテスト
+    - name: Gather ufw status
+      ansible.builtin.shell:
+        cmd: |
+          set -eo pipefail
+          ufw status verbose | jc --ufw
+        executable: /bin/bash
+      changed_when: false
+      register: result
+    - name: Set ufw variable
+      ansible.builtin.set_fact:
+        ufw: "{{ result.stdout | from_json }}"
+    - name: Assert service(ufw)
+      ansible.builtin.assert:
+        that: ufw.status == 'active'
+        fail_msg: "ufw firewall is not active"
+        success_msg: "ufw firewall is active"

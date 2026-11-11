@@ -16,6 +16,16 @@
   tags:
     - role_common_hostname
     - molecule-notest
+## hostnameモジュールは/etc/hostsを更新しないため、
+## 名前解決の失敗によるsudoのタイムアウトを防ぐために自ホスト名を登録する
+- name: Set hostname entry in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1\s'
+    line: "127.0.1.1 {{ common_hostname }}"
+  tags:
+    - role_common_hostname
+    - molecule-notest
 - name: Change home directory permission
   ansible.builtin.file:
     path: /home

@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   role_name: common
+  namespace: wate
   author: yoshiaki tanaka
   description: common server setting
   license: Apache

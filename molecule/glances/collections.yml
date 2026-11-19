@@ -1,0 +1,7 @@
+---
+collections:
+  ## moleculeのvagrantドライバで使用
+  - name: community.vagrant
+  ## ロール内で使用
+  - name: ansible.posix
+  - name: community.general
